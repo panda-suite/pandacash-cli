@@ -1,78 +1,133 @@
-const chalk       = require('chalk');
-const clear       = require('clear');
-const figlet      = require('figlet');
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const chalk   = require('chalk');
+const clear   = require('clear');
+const figlet  = require('figlet');
+const util    = require('util');
+const exec    = util.promisify(require('child_process').exec);
+const wif     = require('wif');
 
-clear();
+const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
+const BITBOX = new BITBOXSDK.default();
 
-console.log(
-  chalk.yellow(
-    figlet.textSync('PandaCash', { horizontalLayout: 'full' })
-  )
-);
+const mnemonic = generateSeedMnemonic();
+const keyPairs = generateSeedKeyPairs();
+
+function generateSeedMnemonic() {
+  return BITBOX.Mnemonic.generate(128);
+}
+
+function generateSeedKeyPairs() {
+  /* WIFs are encoded for mainnet, here we decode, then re-encode the WIF for testnet/regtest */
+  let keyPairs = BITBOX.Mnemonic.toKeypairs(mnemonic, 10, true);
+  let newKeyPairs = [];
+  keyPairs.forEach(keyPair => {
+    const decodedWif = wif.decode(keyPair.privateKeyWIF);
+    const newWif = wif.encode(239, decodedWif.privateKey, decodedWif.compressed);
+    newKeyPairs.push({privateKeyWIF: newWif, address: keyPair.address});
+  })
+  return newKeyPairs;
+}
 
 async function startDocker() {
   // delete the bch-regtest
-  console.log("Restarting Bitcoin Cash Client");
+  console.log('Restarting Bitcoin Cash Client');
 
-  const deletedDocker = await exec('docker rm bch-regtest -f');
-  
-  exec('docker run --name bch-regtest -p 18332:18332 pandacash &');
+  try {
+    await exec('docker rm bch-regtest -f');
+  } catch (e) {
+    // ignored
+  }
 
-  console.log("Bitcoin Cash Client restarted and listens at port 18332");
+  exec('docker run --name bch-regtest -p 18332:18332 pandacash/bch-regtest:latest &');
+
+  await nodeAvailable();
+
+  console.log('Bitcoin Cash Client restarted and listens at port 18332');
+}
+
+async function nodeAvailable() {
+  try {
+    await exec('docker exec bch-regtest bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest getblockchaininfo');
+  } catch {
+    await sleep(500);
+    await nodeAvailable();
+  }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => {
+      setTimeout(resolve, ms);
+  });
+}
+
+async function seedAccounts() {
+  console.log('Seeding accounts');
+  keyPairs.forEach(async (keyPair) => {
+    try {
+      await exec(`docker exec bch-regtest bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generatetoaddress 10 ${keyPair.address}`);
+    } catch (e) {
+      console.log(e);
+    }
+  });
+  console.log('Advancing blockchain to enable spending');
+  await exec('docker exec bch-regtest bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generate 100');
 }
 
 async function startBitboxApi() {
-    // delete the bch-regtest
-    console.log("Starting BITBOX API at port 3000");
-  
-    const api = await exec('BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js');
+  // delete the bch-regtest
+  console.log('Starting BITBOX API at port 3000');
+
+  await exec('BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js');
 }
 
-startDocker()
-.then(() => {
-    startBitboxApi();
-
-
-    console.log(`
+function printPandaMessage() {
+  process.stdout.write(`
     PandaCash CLI v0.0.1
 
     Available Accounts
-    ==================
-    (0) 12azUvcmPmVS4DRsHdvLGXbPYmeGbmWkwg
-    (1) 1GTNU2XZMCFK3TMB8sj9GbYws6saYzBx3U
-    (2) 1Fx19LgHSd9TqGj14Mcw5ELBvM26iDJToa
-    (3) 14JZLt9JtQHwzR2wLF9WoYFTvwBJruCUqb
-    (4) 1BqiCyRZxD5dVoKUccASWzAY7FK3DRKnfA
-    (5) 1Go9LhwZiJYkR2DgUoVnKW6ib4sWUTC5Vv
-    (6) 1LwN9v5xD3TzKQZmcXeMFpnzcbmxpyyyoU
-    (7) 1PPLrrtdwsMETVhGZLgWE7FZoWXBD7UF3f
-    (8) 12Gop9CArngzWtBpuRSyHk8i7saByYFTJn
-    (9) 1MTBGNkHVt9RG1R9XbkkmAamhJwA5T3YPL
-    
+    ==================`);
+
+  keyPairs.forEach((keyPair, i) => {
+    process.stdout.write(`
+    (${i}) ${keyPair.address}`);
+  });
+
+  process.stdout.write(`
+
     Private Keys
-    ==================
-    (0) 5KYargKzWiWgVpqGe7NbcE4RiCdSeektP4Lc58WsF5VP4Ypf6Ky
-    (1) 5Jya1pefFGMUeeq3s28FZnR7MKQFTybB4inbu3fjxEg58JpSYaZ
-    (2) 5K2CgRjpx95EBHq3dHqxaq11VPnFPzMofNeXXLqpeziRpH1jAUM
-    (3) 5K822bWyzLEqJ5RSrrXekcQ2AMyQ1Zo3AJNeqJpCgihcpzuXuTK
-    (4) 5KUXHabVL4Re1fitoUh6DwLaQeoc4s8krjppjKk1PBtx1k3hR2E
-    (5) 5KUXHabVL4Re1fitoUh6DwLaQeoc4s8krjppjKk1PBtx1k3hR2E
-    (6) 5K3davPARvSX8owRheokx58xesE63mDJb3JPErSbp8GWB8cJJEP
-    (7) 5KKkQxAFaTGTYpLmWXtd6WvvCjK8jmg9wsvGVvU7LuExrroCmHp
-    (8) 5KY9DP7K2SsvrP454f622c3vx6Wi7y3wH2T9qLNhBoNrNaaxHeC
-    (9) 5KBxpFbihW4UwyTh7dW5Kw3PwhMeqduzeEGiLQ5TSs7aGP5VyVd
-    
+    ==================`);
+
+  keyPairs.forEach((keyPair, i) => {
+    process.stdout.write(`
+    (${i}) ${keyPair.privateKeyWIF}`);
+  });
+
+  console.log(`
+
     HD Wallet
     ==================
-    Mnemonic:      walnut amazing bitcoin cash finger yard slice funny cotton office hat gallery
+    Mnemonic:      ${mnemonic}
     Base HD Path:  m/44'/145'/0'/0/{account_index}
-    
+
     Bitcoin Cash Listening on localhost:18332
     BITBOX running at localhost:3000
     BITBOX API running at localhost:3000/api
-    `);
-})
+  `);
+}
+
+(async () => {
+  clear();
+
+  console.log(
+    chalk.yellow(
+      figlet.textSync('PandaCash', { horizontalLayout: 'full' })
+    )
+  );
+
+  await startDocker();
+  await seedAccounts();
+  startBitboxApi();
+
+  printPandaMessage();
+})();
 
 
