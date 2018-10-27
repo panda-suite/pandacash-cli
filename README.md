@@ -13,6 +13,10 @@ It is a suite of tools to setup the required environment for working with BCH, W
 npm i
 ```
 
+```
+docker build -t pandacash .
+```
+
 #### Running
 It will start a local bitcoin cash node.
 ```bash
