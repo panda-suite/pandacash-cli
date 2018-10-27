@@ -8,13 +8,26 @@ The vision of Panda Cash is to make Bitcoin Cash easily accessible to every deve
 It is a suite of tools to setup the required environment for working with BCH, Workhole protocol and blockchain applications without much hustle.
 
 ### CLI
-
-It will start a local bitcoin cash node and show 
+#### Installation
 ```bash
-pandacash-cli
+npm i
 ```
 
-It will display:
+#### Running
+It will start a local bitcoin cash node.
+```bash
+npm run start:node
+```
+
+It will start a bitbox server
+```bash
+npm run start:bitbox
+```
+
+It will create new bch addresses and populate them
+```bash
+npm run start
+```
 
 ```bash
 PandaCash CLI v0.0.1
