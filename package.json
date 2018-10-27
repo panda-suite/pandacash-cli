@@ -4,8 +4,11 @@
   "description": "The vision of Panda Cash is to make Bitcoin Cash easily accessible to every developer.",
   "main": "index.js",
   "scripts": {
-    "start:bitbox": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js",
+    "start": "npm run api & echo 'BITBOX API runs at port 3000'",
+    "node": "docker run -it --name bch-regtest -p 18332:18332 slashrsm/bitcoin-cash-regtest:latest",
+    "start:bitbox": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js",
     "console": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js console",
+    "start:api": "BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://127.0.1.0:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +22,7 @@
   },
   "homepage": "https://github.com/panda-cash/panda-cash#readme",
   "dependencies": {
-    "bitbox-sdk": "^2.1.0"
+    "bitbox-sdk": "^2.1.0",
+    "rest.bitcoin.com": "git+https://github.com/Bitcoin-com/rest.bitcoin.com.git"
   }
 }
