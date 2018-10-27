@@ -23,6 +23,9 @@
   "homepage": "https://github.com/panda-cash/panda-cash#readme",
   "dependencies": {
     "bitbox-sdk": "^2.1.0",
+    "chalk": "^2.4.1",
+    "clear": "^0.1.0",
+    "figlet": "^1.2.1",
     "rest.bitcoin.com": "git+https://github.com/Bitcoin-com/rest.bitcoin.com.git"
   }
 }
