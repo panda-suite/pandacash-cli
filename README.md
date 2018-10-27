@@ -24,8 +24,6 @@ npm run start
 ```
 
 ```bash
-|  _ \    __ _   _ __     __| |   __ _   / ___|   __ _   ___  | |__ | |_) |  / _` | | '_ \   / _` |  / _` | | |      / _` | / __| | '_ \
- |  __/  | (_| | | | | | | (_| | | (_| | | |___  | (_| | \__ \ | | | | |_|      \__,_| |_| |_|  \__,_|  \__,_|  \____|  \__,_| |___/ |_| |_|
 Restarting Bitcoin Cash Client
 Bitcoin Cash Client restarted and listens at port 18332
 Starting BITBOX API at port 3000
