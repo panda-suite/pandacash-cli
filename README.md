@@ -66,6 +66,11 @@ Starting BITBOX API at port 3000
     BITBOX API running at localhost:3000/api
 ```
 
+## Debugging
+```bash
+docker ps
+docker exec -i -t 3744e4f881f7 /bin/bash
+````
 
 ## Under the hood
 PandaCash consists of the following components:

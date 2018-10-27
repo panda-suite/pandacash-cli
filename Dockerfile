@@ -1,12 +1,13 @@
 # Distributed under the MIT license - https://opensource.org/licenses/MIT
 FROM debian:stretch-slim 
 
-ENV VERSION 1.5.0.0
-ENV CHECKSUM ffca9f54cc35fcf6cc5a8bd96b4b9c9efa3f474528ab29828d4e4b6e84e7e33d
+ENV VERSION 0.18.2
+ENV CHECKSUM 28d8511789a126aff16e256a03288948f2660c3c8cb0a4c809c5a8618a519a16
 
 COPY bitcoin.conf /opt/bitcoin/bitcoin.conf
 VOLUME /opt/bitcoin/regtest
-ADD https://www.bitcoinunlimited.info/downloads/BUcash-${VERSION}-linux64.tar.gz /tmp/bu.tar.gz
+ADD https://download.bitcoinabc.org/0.18.2/linux/bitcoin-abc-0.18.2-x86_64-linux-gnu.tar.gz /tmp/bu.tar.gz
+
 RUN cd /tmp \
   && echo "$CHECKSUM  bu.tar.gz" | sha256sum -c - \
   && tar -xzvf bu.tar.gz -C /usr/local --strip-components=1 --exclude=*-qt \
