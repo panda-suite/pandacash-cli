@@ -70,7 +70,7 @@ Starting BITBOX API at port 3000
 ## Under the hood
 PandaCash consists of the following components:
 
-### Docker image for ABC bitcoin starting in regtext mode
+### Docker image for ABC bitcoin starting in regtest mode
 It starts a compiled version of bitcoin client executed in retest mode that
 
 1. allows developers to start working on blockchain projects without synchronizing the whole block data,
