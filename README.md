@@ -48,6 +48,7 @@ Private Keys
 HD Wallet
 ==================
 Mnemonic:      walnut amazing bitcoin cash finger yard slice funny cotton office hat gallery
+Base HD Path:  m/44'/145'/0'/0/{account_index}
 
 Listening on localhost:81301
 ```
@@ -63,8 +64,20 @@ It starts a compiled version of bitcoin client executed in retest mode that
 
 2. creates blocks immediately with new trasactions without waiting times, making the development more responsive.
 
-### Docker image for ABC bitcoin starting in regtext mode
+### Docker image for ABC bitcoin starting in regtest mode
 We create initially coinbase transactions and distribute the new coins to the generated addresses for ease of development
+
+### Creation of addresses
+bitcoin-com/bitbox-scaffold-react /src/App.js
+
+### bitbox-gui
+The bitbox gui is an block explorer that runs locally.
+
+### RPC bitcoin.conf
+
+
+### RPC and Restful API
+NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 npm start
 
 # Licence
 MIT
