@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:node": "docker stop bch-regtest && docker rm bch-regtest && docker run -it --name bch-regtest -p 18332:18332 slashrsm/bitcoin-cash-regtest:latest",
+    "start:node": "docker stop bch-regtest && docker rm bch-regtest && docker run -it --name bch-regtest -p 18332:18332 pandacash/bch-regtest:latest",
     "start:bitbox": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js",
     "console": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js console",
     "start:api": "BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://127.0.1.0:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js",
