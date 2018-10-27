@@ -47,7 +47,7 @@ async function startDocker() {
 async function nodeAvailable() {
   try {
     await exec('docker exec bch-regtest bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest getblockchaininfo');
-  } catch {
+  } catch (e) {
     await sleep(500);
     await nodeAvailable();
   }
