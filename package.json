@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:bitbox": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js",
+    "console": "NETWORK=mainnet BITCOINCOM_BASEURL=https://test.bch.api.bitcoindotcom.net/api/ RPC_BASEURL=http://127.0.1.0:18332 RPC_PASSWORD= RPC_USERNAME=bitcoin ZEROMQ_PORT=0 ZEROMQ_URL=0 BITDB_TOKEN=0 node ./node_modules/bitbox-sdk/index.js console",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
