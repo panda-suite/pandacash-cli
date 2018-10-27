@@ -11,6 +11,9 @@
     "start:api": "BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://127.0.1.0:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "pandacash-cli": "index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/panda-cash/panda-cash.git"
@@ -22,11 +25,10 @@
   },
   "homepage": "https://github.com/panda-cash/panda-cash#readme",
   "dependencies": {
-    "bitbox-sdk": "^2.1.0",
+    "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",
     "clear": "^0.1.0",
     "figlet": "^1.2.1",
-    "rest.bitcoin.com": "git+https://github.com/Bitcoin-com/rest.bitcoin.com.git",
-    "wif": "^2.0.6"
+    "rest.bitcoin.com": "git+https://github.com/Bitcoin-com/rest.bitcoin.com.git"
   }
 }
