@@ -1,0 +1,7 @@
+# Build and publish image
+$ export DOCKER_ID_USER="my_username"
+$ docker login
+# run in ./docker dir
+$ docker build ./docker -t bch-regtest:latest
+$ docker tag bch-regtest pandacash/bch-regtest
+$ docker push pandacash/bch-regtest
