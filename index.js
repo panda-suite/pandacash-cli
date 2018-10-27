@@ -96,7 +96,6 @@ function printPandaMessage() {
   });
 
   console.log(`
-
     HD Wallet
     ==================
     Mnemonic:      ${mnemonic}
