@@ -39,7 +39,7 @@ async function startDocker() {
 
 async function nodeAvailable() {
   try {
-    await exec('docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest getblockchaininfo');
+    await exec('docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf getblockchaininfo');
   } catch (e) {
     await sleep(500);
     await nodeAvailable();
@@ -56,15 +56,15 @@ async function seedAccounts() {
   console.log('Seeding accounts');
   keyPairs.forEach(async (keyPair) => {
     try {
-    await exec(`docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest importaddress ${keyPair.address}`)
-    await exec(`docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generatetoaddress 10 ${keyPair.address}`);
+    await exec(`docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf importaddress ${keyPair.address}`)
+    await exec(`docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf generatetoaddress 10 ${keyPair.address}`);
 
     } catch (e) {
       console.log(e);
     }
   });
   console.log('Advancing blockchain to enable spending');
-  await exec('docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generate 500');
+  await exec('docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf generate 500');
 }
 
 async function enableLogging() {
