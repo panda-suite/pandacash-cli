@@ -56,7 +56,7 @@ async function seedAccounts() {
   console.log('Seeding accounts');
   keyPairs.forEach(async (keyPair) => {
     try {
-    await exec(`docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest importaddress ${keyPair.address}`)      
+    await exec(`docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest importaddress ${keyPair.address}`)
     await exec(`docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generatetoaddress 10 ${keyPair.address}`);
 
     } catch (e) {
@@ -72,7 +72,7 @@ async function enableLogging() {
 
   _exec('docker exec -i pandacash tail -n10 -f /opt/bitcoin/regtest/debug.log')
   .stdout.on('data', function(data) {
-    console.log(data.toString()); 
+    console.log(data.toString());
   });
 }
 
@@ -106,6 +106,7 @@ function printPandaMessage() {
   });
 
   console.log(`
+
     HD Wallet
     ==================
     Mnemonic:      ${mnemonic}
