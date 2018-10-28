@@ -1,5 +1,5 @@
 {
-  "name": "panda-cash",
+  "name": "pandacash-cli",
   "version": "0.1.0",
   "description": "The vision of Panda Cash is to make Bitcoin Cash easily accessible to every developer.",
   "main": "index.js",
