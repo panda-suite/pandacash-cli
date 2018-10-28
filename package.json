@@ -1,7 +1,7 @@
 {
   "name": "pandacash-cli",
-  "version": "0.1.0",
-  "description": "The vision of Panda Cash is to make Bitcoin Cash easily accessible to every developer.",
+  "version": "0.1.1",
+  "description": "pandacash-cli is a one-click blockchain solution for easier Bitcoin Cash development.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/panda-cash/panda-cash.git"
+    "url": "git+https://github.com/panda-suite/pandacash-cli.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/panda-cash/panda-cash/issues"
+    "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
-  "homepage": "https://github.com/panda-cash/panda-cash#readme",
+  "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
   "dependencies": {
     "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",

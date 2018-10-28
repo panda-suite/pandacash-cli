@@ -3,8 +3,11 @@ const chalk   = require('chalk');
 const clear   = require('clear');
 const figlet  = require('figlet');
 const util    = require('util');
-const _exec = require('child_process').exec;
+const _exec   = require('child_process').exec;
 const exec    = util.promisify(_exec);
+const path    = require('path');
+
+const restApp = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
@@ -80,7 +83,7 @@ async function startBitboxApi() {
   // delete the pandacash
   console.log('Starting BITBOX API at port 3000');
 
-  await exec('BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ./node_modules/rest.bitcoin.com/app.js');
+  await exec(`BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ${restApp}`);
 }
 
 function printPandaMessage() {
