@@ -97,11 +97,18 @@ exports.config = {
 ```
 
 ## Advanced Usage
-### Debugging the `pandacash-cli` blockchain
+### Debugging the pandacash-cli blockchain
 You can enter the running Docker container, and use regular `bitcoin-cli` commands.
 ```bash
 docker exec -it pandacash /bin/bash
 bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest help
+```
+
+## Troubleshooting
+### Docker image
+If you (accidentally) removed the pandacash docker image from your machine, `pandacash-cli` will stop functioning. The easiest way to fix this is to reinstall `pandacash-cli`, as this rebuilds the docker image.
+```bash
+npm install --global pandacash-cli
 ```
 
 ## Under the hood

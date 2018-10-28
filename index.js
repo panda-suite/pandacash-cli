@@ -6,11 +6,16 @@ const util    = require('util');
 const _exec   = require('child_process').exec;
 const exec    = util.promisify(_exec);
 const path    = require('path');
-
-const restApp = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
+const package = require('./package.json');
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
+
+const IMAGE_NAME = 'pandacash';
+const CONTAINER_NAME = 'pandacash';
+const BITCOIN_CLI = 'bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest';
+const BITCOIN_DATA_DIR = '/opt/bitcoin/';
+const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
 
 const mnemonic = generateSeedMnemonic();
 const keyPairs = generateSeedKeyPairs();
@@ -28,12 +33,12 @@ async function startDocker() {
   console.log('Restarting Bitcoin Cash Client');
 
   try {
-    await exec('docker rm pandacash -f');
+    await exec(`docker rm ${CONTAINER_NAME} -f`);
   } catch (e) {
     // ignored
   }
 
-  exec('docker run --name pandacash -p 18332:18332 pandacash &');
+  exec(`docker run --name ${CONTAINER_NAME} -p 18332:18332 -p 3002:3002 -p 3001:3001 ${IMAGE_NAME} &`);
 
   await nodeAvailable();
 
@@ -42,7 +47,7 @@ async function startDocker() {
 
 async function nodeAvailable() {
   try {
-    await exec('docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf getblockchaininfo');
+    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} getblockchaininfo`);
   } catch (e) {
     await sleep(500);
     await nodeAvailable();
@@ -59,21 +64,21 @@ async function seedAccounts() {
   console.log('Seeding accounts');
   keyPairs.forEach(async (keyPair) => {
     try {
-    await exec(`docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf importaddress ${keyPair.address}`)
-    await exec(`docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf generatetoaddress 10 ${keyPair.address}`);
+    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} importaddress ${keyPair.address}`)
+    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} generatetoaddress 10 ${keyPair.address}`);
 
     } catch (e) {
       console.log(e);
     }
   });
   console.log('Advancing blockchain to enable spending');
-  await exec('docker exec pandacash bitcoin-cli -conf=/opt/bitcoin/bitcoin.conf generate 500');
+  await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} generate 500`);
 }
 
-async function enableLogging() {
-  console.log('Enabling loging of debug.db.');
+function enableLogging() {
+  console.log('Enabling logging of debug.db.');
 
-  _exec('docker exec -i pandacash tail -n10 -f /opt/bitcoin/regtest/debug.log')
+  _exec(`docker exec -i ${CONTAINER_NAME} tail -n10 -f ${BITCOIN_DATA_DIR}/regtest/debug.log`)
   .stdout.on('data', function(data) {
     console.log(data.toString());
   });
@@ -83,12 +88,12 @@ async function startBitboxApi() {
   // delete the pandacash
   console.log('Starting BITBOX API at port 3000');
 
-  await exec(`BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ${restApp}`);
+  await exec(`BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ${REST_APP}`);
 }
 
 function printPandaMessage() {
   process.stdout.write(`
-    PandaCash CLI v0.0.1
+    PandaCash CLI v${package.version}
 
     Available Accounts
     ==================`);
