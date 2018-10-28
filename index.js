@@ -3,7 +3,8 @@ const chalk   = require('chalk');
 const clear   = require('clear');
 const figlet  = require('figlet');
 const util    = require('util');
-const exec    = util.promisify(require('child_process').exec);
+const _exec = require('child_process').exec;
+const exec    = util.promisify(_exec);
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
@@ -66,6 +67,15 @@ async function seedAccounts() {
   await exec('docker exec pandacash bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest generate 500');
 }
 
+async function enableLogging() {
+  console.log('Enabling loging of debug.db.');
+
+  _exec('docker exec -i pandacash tail -n10 -f /opt/bitcoin/regtest/debug.log')
+  .stdout.on('data', function(data) {
+    console.log(data.toString()); 
+  });
+}
+
 async function startBitboxApi() {
   // delete the pandacash
   console.log('Starting BITBOX API at port 3000');
@@ -121,6 +131,8 @@ function printPandaMessage() {
   startBitboxApi();
 
   printPandaMessage();
+
+  enableLogging();
 })();
 
 
