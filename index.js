@@ -1,12 +1,27 @@
 #! /usr/bin/env node
-const chalk   = require('chalk');
-const clear   = require('clear');
-const figlet  = require('figlet');
-const util    = require('util');
-const _exec   = require('child_process').exec;
-const exec    = util.promisify(_exec);
-const path    = require('path');
-const package = require('./package.json');
+const chalk    = require('chalk');
+const clear    = require('clear');
+const figlet   = require('figlet');
+const util     = require('util');
+const _exec    = require('child_process').exec;
+const exec     = util.promisify(_exec);
+const path     = require('path');
+const pkg      = require('./package.json');
+const yargs    = require('yargs');
+const initArgs = require("./args")
+
+var detailedVersion = `Pandacash CLI v${pkg.version}`;
+
+var argv = initArgs(yargs, detailedVersion).argv;
+
+var options = {
+  mnemonic: argv.m,
+  totalAccounts: argv.a,
+  // defaultBalance: argv.e,
+  // blockTime: argv.b,
+  debug: argv.debug,
+  // time: argv.t,
+}
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
@@ -17,15 +32,15 @@ const BITCOIN_CLI = 'bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest'
 const BITCOIN_DATA_DIR = '/opt/bitcoin/';
 const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
 
-const mnemonic = generateSeedMnemonic();
-const keyPairs = generateSeedKeyPairs();
+const mnemonic = options.mnemonic || generateSeedMnemonic();
+const keyPairs = generateSeedKeyPairs(mnemonic, options.totalAccounts);
 
 function generateSeedMnemonic() {
   return BITBOX.Mnemonic.generate(128);
 }
 
-function generateSeedKeyPairs() {
-  return BITBOX.Mnemonic.toKeypairs(mnemonic, 10, true);
+function generateSeedKeyPairs(mnemonic, totalAccounts) {
+  return BITBOX.Mnemonic.toKeypairs(mnemonic, totalAccounts, true);
 }
 
 async function startDocker() {
@@ -93,7 +108,7 @@ async function startBitboxApi() {
 
 function printPandaMessage() {
   process.stdout.write(`
-    PandaCash CLI v${package.version}
+    ${detailedVersion}
 
     Available Accounts
     ==================`);
@@ -141,7 +156,9 @@ function printPandaMessage() {
 
   printPandaMessage();
 
-  enableLogging();
+  if (options.debug) {
+    enableLogging();
+  }
 })();
 
 

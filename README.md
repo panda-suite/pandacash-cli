@@ -22,9 +22,15 @@ npm install --global pandacash-cli
 ## Usage
 After installing `pandacash-cli`, it can be used as a command-line tool to quickly spin up a local development BCH blockchain with a single command. The local blockchain comes with ten pre-funded BCH addresses, which can be used in the local development process. `pandacash-cli` will also spin up a REST API to interface with the local blockchain that is fully compatible with [BITBOX](https://developer.bitcoin.com/bitbox/).
 
+**Command Line**
 ```bash
-pandacash-cli
+$ pandacash-cli <options>
 ```
+
+Options:
+* `-a` or `--accounts`: Specify the number of accounts to generate at startup.
+* `-m` or `--mnemonic`: bip39 mnemonic phrase for generating a PRNG seed, which is in turn used for hierarchical deterministic (HD) account generation.
+* `--debug`: Show debug output from the bitcoin node.
 
 ```bash
   ____                        _            ____                 _
@@ -39,37 +45,37 @@ Seeding accounts
 Advancing blockchain to enable spending
 Starting BITBOX API at port 3000
 
-    PandaCash CLI v0.0.1
+    PandaCash CLI v0.2.0
 
     Available Accounts
     ==================
-    (0) bchreg:qr9mp5wlj0qey2es35j99kg0qn4lwj9jsqvwacyyfs
-    (1) bchreg:qq7e82yqmlwf94u085vc402ecv26rvl09srlpjkf09
-    (2) bchreg:qqpgxm3j008hlxqtjdxtxrpylvvasg7dpql2xrwhqz
-    (3) bchreg:qrkw3ytggq4g5ng3v0n9efrnw9q9zvdrjy5xwjnncs
-    (4) bchreg:qp9jzuvszclraqq7jh485pf3p2dn5cyw3gmpdnehzc
-    (5) bchreg:qrkgyqf04a8x55a9juwm9k6evdysmzq2zgjcl4y93e
-    (6) bchreg:qz540yauansl6lu32j0uhrlzzvyk4s2nlufw5jcrqz
-    (7) bchreg:qpy7us0e6chgej3lhwrpr6rlvtlym5hrh5rsp63g68
-    (8) bchreg:qpejwem46w6m4ah9lkr0v5gdaqy277dxdc7rgg4wl0
-    (9) bchreg:qzeekdn8jwn48kaufzru4zhwuphme79695ln2kpmpy
+    (0) bchreg:qpk8s58gaal6gwhvyulxszzecws539g27c50v0nk6t
+    (1) bchreg:qqm2nlulp8ulnnhxqpmmtkvvwmkr8usrhggh3z5uwl
+    (2) bchreg:qrl5aqss5e7av0606zl5ajnj2xurkf280gwyqff9v6
+    (3) bchreg:qqahjdfalxw9j2t57ajs5jctl9ayzp5yk553yvxwv3
+    (4) bchreg:qp3qhranmxzpr42rn0sl3rqmvdhrcty9l5nugh9ysp
+    (5) bchreg:qraulxcveneskyfayw78fyaxhvr6t8w3ssp7zclse8
+    (6) bchreg:qqahhkf755uz3dz8g48d3dzgvee0p4c79ynffxevqh
+    (7) bchreg:qr7tgfwz2gzcy424v7g34enhugs02e7qkukh96cfc7
+    (8) bchreg:qps5zg80jh4lden2crvzr5uzra8tesfs2vjp4l6z0t
+    (9) bchreg:qqc0pw9q5c7ssx6wxpug63w3y6vlw0zamqjjp3p5mr
 
     Private Keys
     ==================
-    (0) cV59RxmDATEV3x66grEWGbWgvGHYCQoCu9uDwtF4uyQtxTm52Ptb
-    (1) cSnTygYBZdbH2fNzoPzk9kARJNc6zaAsUyvpWfUbztFmYctaAw4E
-    (2) cVEiVmNNs8W2nTqHkcM1Ghpga4SQijw3W86eEerBp5Ynxe8zWq8d
-    (3) cN35RxP1bhyuoSnMF6DZSa6ZiVddZ6Rm5MFVQUSt1qTDua35jVR6
-    (4) cV6ughqaPwG1DqqW8oWk7PC3PA9SUGCXfxxSyPe58pQivchVHR9i
-    (5) cQ4cBokvYvSL8TWLiWGZESS2YVQDxXXpoqh3QAUizU2sBfJnsHiJ
-    (6) cPbDNta1FNgvfKR44hS37aEQai6oS31LVDD6kpFZoGkuri64ULya
-    (7) cR38r4hUmgfuyTEqkiWtaxwUWZyc6LA8M6JAb9pmjereWUhBwGJp
-    (8) cW1HaJ2b5FrFA5ya5sHMciUC9WaQJQsZu5n5odWsSKJToXoGhMqr
-    (9) cQb4ycXBeecZga3cvq18KEUxwxH1qARhQQ38KJvyX8QxLgEj5Bqe
+    (0) cVABvrFC8MXZJHSCyULa99MXDsQdLeQwKHxjGXughgd6pXNtd558
+    (1) cPZ2RbJK6UYVjeMwpgtd8EvnzjfdZraegcsddz6jPmajE4Qe848d
+    (2) cSDUAHNne1ssgFsavbjp8mLBy7CEtqgYM874konLWiy4BVbf85PM
+    (3) cT3ApxBWsoX62jUZiJcpzsXQHbXB4sTgdH8PF2qDTdHSgaLurcJJ
+    (4) cV9tvwoc9iDpK2kWLLzxEdRFe68LNMTrZQ7xLiyhCuZGX8pQfpGH
+    (5) cMmQyLbXeX9jcucMwr4GFQKwWr7knCPqnS6GU7b7HD1D6R8xR755
+    (6) cQ2ULCzf2FwcUsV1rioHrEVUR1p4zUmjcpEVFHmBTdM6CJP7Si2H
+    (7) cNYwTL8nFm9ckqwRMDuRuTUd1NraSkTs2Np87TuBCCnvNn3enVy6
+    (8) cVY8RP3UXBrZksGPNhAR72qpGHkYmmLVu6ycgizSEAYWrhHvbhia
+    (9) cUHqwE6oXE5dDQrn8bXwkYmm71vViwzjGseGeSPCyUjThEXZHpXG
 
     HD Wallet
     ==================
-    Mnemonic:      unveil stadium curtain now network cabbage fun silly spider neither machine power
+    Mnemonic:      candy maple cake sugar pudding cream honey rich smooth crumble sweet treat
     Base HD Path:  m/44'/145'/0'/0/{account_index}
 
     Bitcoin Cash Listening on http://localhost:18332
