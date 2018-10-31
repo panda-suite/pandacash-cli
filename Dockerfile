@@ -1,5 +1,5 @@
 # Distributed under the MIT license - https://opensource.org/licenses/MIT
-FROM debian:stretch-slim 
+FROM node:8
 
 ENV VERSION 0.18.2
 ENV CHECKSUM 28d8511789a126aff16e256a03288948f2660c3c8cb0a4c809c5a8618a519a16

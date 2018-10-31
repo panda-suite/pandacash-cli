@@ -23,6 +23,9 @@ var options = {
   // time: argv.t,
 }
 
+console.log("OPTIONS:");
+console.log(options);
+
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
