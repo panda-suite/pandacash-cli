@@ -23,9 +23,6 @@ var options = {
   // time: argv.t,
 }
 
-console.log("OPTIONS:");
-console.log(options);
-
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
@@ -33,7 +30,7 @@ const IMAGE_NAME = 'pandacash';
 const CONTAINER_NAME = 'pandacash';
 const BITCOIN_CLI = 'bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest';
 const BITCOIN_DATA_DIR = '/opt/bitcoin/';
-const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
+const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/dist/app.js';
 
 const mnemonic = options.mnemonic || generateSeedMnemonic();
 const keyPairs = generateSeedKeyPairs(mnemonic, options.totalAccounts);
@@ -152,6 +149,11 @@ function printPandaMessage() {
       figlet.textSync('PandaCash', { horizontalLayout: 'full' })
     )
   );
+
+  if (options.debug) {
+    console.log("OPTIONS:");
+    console.log(options);
+  }
 
   await startDocker();
   await seedAccounts();
