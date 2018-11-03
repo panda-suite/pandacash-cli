@@ -21,16 +21,18 @@
     "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
   "contributors": [
-    { "name" : "Adrian Barwicki",
-      "email" : "adrianbarwicki@gmail.com",
-      "url" : "https://adrianbarwicki.com"
-    },
-    { "name" : "Rosco Kalis",
-      "email" : "rosco.kalis@gmail.com",
-      "url" : "https://kalis.me"
+    {
+      "name": "Adrian Barwicki",
+      "email": "adrianbarwicki@gmail.com",
+      "url": "https://adrianbarwicki.com"
     },
     {
-      "name" : "Gabriel Cardona"
+      "name": "Rosco Kalis",
+      "email": "rosco.kalis@gmail.com",
+      "url": "https://kalis.me"
+    },
+    {
+      "name": "Gabriel Cardona"
     }
   ],
   "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
