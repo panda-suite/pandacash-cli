@@ -14,16 +14,28 @@
     "type": "git",
     "url": "git+https://github.com/panda-suite/pandacash-cli.git"
   },
-  "author": "",
+  "author": "Pandas",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
+  "contributors": [
+    { "name" : "Adrian Barwicki",
+      "email" : "adrianbarwicki@gmail.com",
+      "url" : "https://adrianbarwicki.com"
+    },
+    { "name" : "Rosco Kalis",
+      "email" : "rosco.kalis@gmail.com",
+      "url" : "https://kalis.me"
+    },
+    {
+      "name" : "Gabriel Cardona"
+    }
+  ],
   "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
   "dependencies": {
     "bcash": "^1.0.2",
     "bitbox-sdk": "^2.1.1",
-    "bitcoin-cash-rpc": "^0.2.1",
     "chalk": "^2.4.1",
     "clear": "^0.1.0",
     "curl": "^0.1.4",
