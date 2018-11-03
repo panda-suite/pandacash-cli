@@ -30,8 +30,6 @@ console.log(options);
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
-const CONTAINER_NAME = 'pandacash';
-const BITCOIN_DATA_DIR = '/opt/bitcoin/';
 const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
 
 const mnemonic = options.mnemonic || generateSeedMnemonic();
@@ -61,6 +59,10 @@ async function startNode() {
    * b) will save the data in the repository
    */
   blockchainStdout = _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`).stdout;
+
+  if (options.debug) {
+    enableLogging();
+  }
 
   await nodeAvailable();
 

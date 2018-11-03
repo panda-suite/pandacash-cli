@@ -2,7 +2,6 @@
 const chalk    = require('chalk');
 const clear    = require('clear');
 const figlet   = require('figlet');
-
 const pandacashCore = require('./pandacash-core');
 
 const bootstrap = () => {
@@ -11,10 +10,6 @@ const bootstrap = () => {
 
     pandacashCore.startApi();
     pandacashCore.printPandaMessage();
-
-    // if (options.debug) {
-    // pandacashCore.enableLogging();
-    // }
   })
 };
 

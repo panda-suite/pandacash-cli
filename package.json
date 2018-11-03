@@ -4,7 +4,8 @@
   "description": "pandacash-cli is a one-click blockchain solution for easier Bitcoin Cash development.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js --debug",
+    "start": "node index.js",
+    "start:debug": "node index.js --debug",
     "docker:build": "docker build -t pandacash ."
   },
   "bin": {
