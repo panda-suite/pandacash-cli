@@ -5,7 +5,8 @@ const path     = require('path');
 const yargs    = require('yargs');
 const initArgs = require("./args")
 const pkg      = require('../package.json');
-const blockchain = require('./rpc');
+const PandaCashRPC = require('./rpc');
+
 
 var detailedVersion = `Pandacash CLI v${pkg.version}`;
 
@@ -20,15 +21,17 @@ var options = {
   // time: argv.t,
 }
 
+const NODE_PORT = 48332;
+
+const blockchain = new PandaCashRPC("127.0.0.1", NODE_PORT, "regtest");
+
 console.log("OPTIONS:");
 console.log(options);
 
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
-const IMAGE_NAME = 'pandacash';
 const CONTAINER_NAME = 'pandacash';
-const BITCOIN_CLI = 'bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest';
 const BITCOIN_DATA_DIR = '/opt/bitcoin/';
 const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
 
@@ -43,22 +46,22 @@ function generateSeedKeyPairs(mnemonic, totalAccounts) {
   return BITBOX.Mnemonic.toKeypairs(mnemonic, totalAccounts, true);
 }
 
+let blockchainStdout;
+
+/**
+ * We use the bcash implementation
+ * http://bcoin.io/api-docs
+ */
 async function startNode() {
   // delete the pandacash
   console.log('Starting Bitcoin Cash blockchain');
-
+  
   /**
    * Will start the bcash node
    * a) in the regtest mode
    * b) will save the data in the repository
    */
-  _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`);
-  
-  /**
-  .stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-  */
+  blockchainStdout = _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`).stdout;
 
   await nodeAvailable();
 
@@ -84,10 +87,8 @@ async function seedAccounts() {
   console.log('Seeding accounts');
   keyPairs.forEach(async (keyPair) => {
     try {
-
-    await blockchain.importaddress([ keyPair.address ]);
-    await blockchain.generatetoaddress([ 10, keyPair.address ]);
-  
+      await blockchain.importaddress([ keyPair.address ]);
+      await blockchain.generatetoaddress([ 10, keyPair.address ]);
     } catch (e) {
       console.log(e);
     }
@@ -101,17 +102,30 @@ async function seedAccounts() {
 function enableLogging() {
   console.log('Enabling logging of debug.db.');
 
-  _exec(`docker exec -i ${CONTAINER_NAME} tail -n10 -f ${BITCOIN_DATA_DIR}/regtest/debug.log`)
-  .stdout.on('data', function(data) {
+  blockchainStdout && blockchainStdout.on('data', function(data) {
     console.log(data.toString());
   });
 }
 
-async function startBitboxApi() {
-  // delete the pandacash
+/**
+ * Starts the wrapper around the RPC commands
+ * We currently use the Bitbox implementation.
+ */
+async function startApi() {
   console.log('Starting BITBOX API at port 3000');
 
-  await exec(`BITCOINCOM_BASEURL=http://localhost:3000/api/ RPC_BASEURL=http://localhost:18332/ RPC_PASSWORD=regtest RPC_USERNAME=regtest ZEROMQ_PORT=0 ZEROMQ_URL=0 NETWORK=local node ${REST_APP}`);
+  const commands = [
+    "BITCOINCOM_BASEURL=http://localhost:3000/api/",
+    "RPC_BASEURL=http://localhost:48332/",
+    "RPC_PASSWORD=regtest",
+    "RPC_USERNAME=regtest",
+    "ZEROMQ_PORT=0",
+    "ZEROMQ_URL=0",
+    "NETWORK=local", 
+    `node ${REST_APP}`
+  ];
+
+  await exec(commands.join(" "));
 }
 
 function printPandaMessage() {
@@ -142,8 +156,8 @@ function printPandaMessage() {
     ==================
     Mnemonic:      ${mnemonic}
     Base HD Path:  m/44'/145'/0'/0/{account_index}
-
-    Bitcoin Cash Listening on http://localhost:18332
+ 
+    Bitcoin Cash Listening on http://localhost:${NODE_PORT}
     BITBOX API running at http://localhost:3000/v1/
     BITBOX API Docs running at http://localhost:3000/
   `);
@@ -151,5 +165,8 @@ function printPandaMessage() {
 
 module.exports = {
     startNode,
-    seedAccounts
+    seedAccounts,
+    startApi,
+    printPandaMessage,
+    enableLogging
 }

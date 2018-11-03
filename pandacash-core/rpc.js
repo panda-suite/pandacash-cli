@@ -1,32 +1,40 @@
 const fetch = require('node-fetch');
 
-const connectionData = {
-    host: "127.0.0.1",
-    port: 48332,
-    network: "regtest"
-};
+class PandaCashRPC {
+    constructor(host, port, network) {
+        this.connectionData = {
+            host: host || "127.0.0.1",
+            port: port || 48332,
+            network: network || "regtest"
+        };
 
-const runMethod = (methodName, params) => new Promise((resolve, reject) => {
-    const body = {
-        method: methodName,
-        params
-    };
+        this.getinfo = this.methodFactory("getinfo");
+        this.importaddress = this.methodFactory("importaddress");
+        this.generatetoaddress = this.methodFactory("generatetoaddress");
+        this.getblockchaininfo = this.methodFactory("getblockchaininfo");
+        this.generate = this.methodFactory("generate");
+    }
 
-    fetch(`http://${connectionData.host}:${connectionData.port}`, {
-        method: 'POST',
-        body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then(json => resolve(json.result))
-    .catch(err => reject(err));
-});
+    runMethod(methodName, params) {
+        return new Promise((resolve, reject) => {
+            const body = {
+                method: methodName,
+                params
+            };
+    
+            fetch(`http://${this.connectionData.host}:${this.connectionData.port}`, {
+                method: 'POST',
+                body: JSON.stringify(body)
+            })
+            .then(res => res.json())
+            .then(json => resolve(json.result))
+            .catch(err => reject(err));
+        });
+    } 
 
-const methodFactory = (methodName) => (params) => runMethod(methodName, params);
+    methodFactory(methodName) {
+        return (params) => this.runMethod(methodName, params);
+    }
+}
 
-module.exports = {
-    getinfo: methodFactory("getinfo"),
-    importaddress: methodFactory("importaddress"),
-    generatetoaddress: methodFactory("generatetoaddress"),
-    getblockchaininfo: methodFactory("getblockchaininfo"),
-    generate: methodFactory("generate")
-};
+module.exports = PandaCashRPC;

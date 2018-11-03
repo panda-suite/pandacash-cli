@@ -1,20 +1,18 @@
 # pandacash-cli
 Panda Suite is a suite of tools to make BCH development more accessible to every developer.
 
-When developing applications for Bitcoin Cash, it is important that its functionality is well-tested, as the app can potentially be dealing with large amounts of money. For testing purposes, there is a public Bitcoin Cash testnet, but this testnet can not be used without an internet connection, and obtaining larger amounts of tBCH can be cumbersome. Finally, in earlier stages of development, many developers would rather not be using a public network already, and would rather develop locally until development has furthered.
+When developing applications for Bitcoin Cash, it is important that its functionality is well-tested, as the app can potentially be dealing with large amounts of money. For testing purposes, there is a public Bitcoin Cash testnet, but this testnet can not be used without an internet connection, and obtaining larger amounts of BCH can be cumbersome. Finally, in earlier stages of development, many developers would rather not be using a public network already, and would rather develop locally until development has furthered.
 
 This is where `pandacash-cli` comes in. `pandacash-cli` is a one-click Bitcoin Cash blockchain with pre-funded BCH addresses, enabling developers to quickly start working with BCH without any hassle. `pandacash-cli` is similar to [`ganache-cli`](https://github.com/trufflesuite/ganache-cli), but for Bitcoin Cash.
 
 ## Prerequisites
-To run `pandacash-cli`, make sure that [Node.js](https://nodejs.org/) and [Docker](https://www.docker.com/) are installed.
+To run `pandacash-cli`, make sure that [Node.js](https://nodejs.org/) is installed.
 On macOS these tools can be installed through [Homebrew](https://brew.sh/).
 ```bash
 brew install node
-brew cask install docker
 ```
 
 ## Installation
-Make sure that Docker is running before installing `pandacash-cli`. `pandacash-cli` can then be installed through `npm`.
 ```bash
 npm install --global pandacash-cli
 ```

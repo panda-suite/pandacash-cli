@@ -5,7 +5,24 @@ const figlet   = require('figlet');
 
 const pandacashCore = require('./pandacash-core');
 
-(async () => {
+const bootstrap = () => {
+  pandacashCore.startNode().then(() => {
+    pandacashCore.seedAccounts();
+
+    pandacashCore.startApi();
+    pandacashCore.printPandaMessage();
+
+    // if (options.debug) {
+    // pandacashCore.enableLogging();
+    // }
+  })
+};
+
+module.exports = {
+  bootstrap
+};
+
+if (!module.parent) {
   clear();
 
   console.log(
@@ -13,15 +30,8 @@ const pandacashCore = require('./pandacash-core');
       figlet.textSync('PandaCash', { horizontalLayout: 'full' })
     )
   );
-  
-  await pandacashCore.startNode();
-  await pandacashCore.seedAccounts();
-  // startBitboxApi();
 
-  // printPandaMessage();
+  bootstrap();
 
-  // if (options.debug) {
-    // services.enableLogging();
-  // }
-})();
-
+  process.stdin.resume();
+}
