@@ -38,7 +38,7 @@ Options:
  |_|      \__,_| |_| |_|  \__,_|  \__,_|  \____|  \__,_| |___/ |_| |_|
 
 Restarting Bitcoin Cash Client
-Bitcoin Cash Client restarted and listens at port 18332
+Bitcoin Cash Client restarted and listens at port 48332
 Seeding accounts
 Advancing blockchain to enable spending
 Starting BITBOX API at port 3000
@@ -76,12 +76,12 @@ Starting BITBOX API at port 3000
     Mnemonic:      candy maple cake sugar pudding cream honey rich smooth crumble sweet treat
     Base HD Path:  m/44'/145'/0'/0/{account_index}
 
-    Bitcoin Cash Listening on http://localhost:18332
+    Bitcoin Cash Listening on http://localhost:48332
     BITBOX API running at http://localhost:3000/v1/
     BITBOX API Docs running at http://localhost:3000/
 ```
 
-The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:18332` and through a REST API on `http://localhost:3000/`. Most importantly, it can be used inside BITBOX applications, by defining a new `local` bitbox environment:
+The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:48332` and through a REST API on `http://localhost:3000/`. Most importantly, it can be used inside BITBOX applications, by defining a new `local` bitbox environment:
 
 **bitbox.js**
 ```javascript
@@ -99,25 +99,9 @@ exports.config = {
   }
 };
 ```
-
-## Advanced Usage
-### Debugging the pandacash-cli blockchain
-You can enter the running Docker container, and use regular `bitcoin-cli` commands.
-```bash
-docker exec -it pandacash /bin/bash
-bitcoin-cli -regtest -rpcuser=regtest -rpcpassword=regtest help
-```
-
-## Troubleshooting
-### Docker image
-If you (accidentally) removed the pandacash docker image from your machine, `pandacash-cli` will stop functioning. The easiest way to fix this is to reinstall `pandacash-cli`, as this rebuilds the docker image.
-```bash
-npm install --global pandacash-cli
-```
-
 ## Under the hood
 PandaCash consists of the following components:
-* Bitcoin-ABC in regtest mode
+* bcash implementation of bitcoin cash node in regtest mode
   * Doesn't sync with other Bitcoin nodes, and immediately creates new blocks on every transaction.
 * Prefunded addresses
   * 10 addresses with 62.5 spendable BCH each, generated from a random mnemonic.

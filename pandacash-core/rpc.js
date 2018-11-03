@@ -4,7 +4,7 @@ class PandaCashRPC {
     constructor(host, port, network) {
         this.connectionData = {
             host: host || "127.0.0.1",
-            port: port || 48332,
+            port: port || 18332,
             network: network || "regtest"
         };
 

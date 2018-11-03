@@ -7,7 +7,6 @@ const initArgs = require("./args")
 const pkg      = require('../package.json');
 const PandaCashRPC = require('./rpc');
 
-
 var detailedVersion = `Pandacash CLI v${pkg.version}`;
 
 var argv = initArgs(yargs, detailedVersion).argv;
@@ -65,7 +64,7 @@ async function startNode() {
 
   await nodeAvailable();
 
-  console.log('Bitcoin Cash blockchain restarted and listens at port 18332');
+  console.log(`Bitcoin Cash blockchain restarted and listens at port ${NODE_PORT}`);
 }
 
 async function nodeAvailable() {
@@ -116,7 +115,7 @@ async function startApi() {
 
   const commands = [
     "BITCOINCOM_BASEURL=http://localhost:3000/api/",
-    "RPC_BASEURL=http://localhost:48332/",
+    `RPC_BASEURL=http://localhost:${NODE_PORT}/`,
     "RPC_PASSWORD=regtest",
     "RPC_USERNAME=regtest",
     "ZEROMQ_PORT=0",
