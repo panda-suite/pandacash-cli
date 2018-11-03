@@ -1,0 +1,4 @@
+# pandacash-cli Release Notes & Changelog
+
+## v0.3.0
+Major change include a full intergration with a  bitcoin cash blockchain nodejs implementation - bcash.
