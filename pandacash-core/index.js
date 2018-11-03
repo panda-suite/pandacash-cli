@@ -58,7 +58,10 @@ async function startNode() {
    * a) in the regtest mode
    * b) --prefix=${__dirname}/../.bcash
    */
-  blockchainStdout = _exec(`./node_modules/bcash/bin/bcash --network=regtest`).stdout;
+
+  const cmd = __dirname + `/../node_modules/bcash/bin/bcash --network=regtest`;
+  
+  blockchainStdout = _exec(cmd).stdout;
 
   if (options.debug) {
     enableLogging();
