@@ -31,7 +31,7 @@ console.log(options);
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
-const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/app.js';
+const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/dist/app.js';
 
 const mnemonic = options.mnemonic || generateSeedMnemonic();
 const keyPairs = generateSeedKeyPairs(mnemonic, options.totalAccounts);
