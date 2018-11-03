@@ -49,6 +49,7 @@ let blockchainStdout;
  * We use the bcash implementation
  * http://bcoin.io/api-docs
  */
+
 async function startNode() {
   // delete the pandacash
   console.log('Starting Bitcoin Cash blockchain');
@@ -59,7 +60,7 @@ async function startNode() {
    * b) --prefix=${__dirname}/../.bcash
    */
 
-  const cmd = __dirname + `/../node_modules/bcash/bin/bcash --network=regtest`;
+  const cmd = path.dirname(require.resolve('bcash/package.json')) + `/bin/bcash --network=regtest`;
   
   blockchainStdout = _exec(cmd).stdout;
 
