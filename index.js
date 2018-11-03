@@ -5,7 +5,8 @@ const figlet   = require('figlet');
 const pandacashCore = require('./pandacash-core');
 
 const bootstrap = () => {
-  pandacashCore.startNode().then(() => {
+  pandacashCore.startNode()
+  .then(() => {
     pandacashCore.seedAccounts();
 
     pandacashCore.startApi();

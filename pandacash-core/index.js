@@ -5,6 +5,7 @@ const path     = require('path');
 const yargs    = require('yargs');
 const initArgs = require("./args")
 const pkg      = require('../package.json');
+const bchNode = require('./bchNode');
 const PandaCashRPC = require('./rpc');
 
 var detailedVersion = `Pandacash CLI v${pkg.version}`;
@@ -60,17 +61,13 @@ async function startNode() {
    * b) --prefix=${__dirname}/../.bcash
    */
 
-  const cmd = path.dirname(require.resolve('bcash/package.json')) + `/bin/bcash --network=regtest`;
-  
-  blockchainStdout = _exec(cmd).stdout;
-
-  if (options.debug) {
-    enableLogging();
-  }
+  bchNode.startNode({
+    debug: options.debug
+  });
 
   await nodeAvailable();
 
-  console.log(`Bitcoin Cash blockchain restarted and listens at port ${NODE_PORT}`);
+  console.log(`Bitcoin Cash blockchain started and listens at port ${NODE_PORT}`);
 }
 
 async function nodeAvailable() {
@@ -102,14 +99,6 @@ async function seedAccounts() {
   console.log('Advancing blockchain to enable spending');
 
   await blockchain.generate([ 500, keyPairs[0].address  ])
-}
-
-function enableLogging() {
-  console.log('Enabling logging of debug.db.');
-
-  blockchainStdout && blockchainStdout.on('data', function(data) {
-    console.log(data.toString());
-  });
 }
 
 /**
@@ -172,6 +161,5 @@ module.exports = {
     startNode,
     seedAccounts,
     startApi,
-    printPandaMessage,
-    enableLogging
+    printPandaMessage
 }
