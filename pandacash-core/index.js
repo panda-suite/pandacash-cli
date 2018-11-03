@@ -56,9 +56,9 @@ async function startNode() {
   /**
    * Will start the bcash node
    * a) in the regtest mode
-   * b) will save the data in the repository
+   * b) --prefix=${__dirname}/../.bcash
    */
-  blockchainStdout = _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`).stdout;
+  blockchainStdout = _exec(`./node_modules/bcash/bin/bcash --network=regtest`).stdout;
 
   if (options.debug) {
     enableLogging();
