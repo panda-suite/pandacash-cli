@@ -13,15 +13,15 @@ const pandacashCore = require('./pandacash-core');
       figlet.textSync('PandaCash', { horizontalLayout: 'full' })
     )
   );
-
+  
   await pandacashCore.startNode();
-  // await seedAccounts();
+  await pandacashCore.seedAccounts();
   // startBitboxApi();
 
   // printPandaMessage();
 
-  if (options.debug) {
+  // if (options.debug) {
     // services.enableLogging();
-  }
+  // }
 })();
 

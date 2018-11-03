@@ -1,12 +1,10 @@
-let BCC = require("bitcoin-cash-rpc");
-let bcc = new BCC("127.0.0.1", "regtest", "regtest", 18332, 3000);
+const blockchain = require('../pandacash-core/rpc');
 
-const runMethod = async (methodName) => {
-    let res = await bcc[methodName]();
+blockchain.getinfo().then(result => {
+   console.log(result);
+});
 
-    console.log(res);
-};
 
-runMethod("getInfo");
-
-runMethod("getWalletInfo");
+blockchain.importaddress("RCFhpyWXkz5GxskL96q4KtceRXuAMnWUQo").then(result => {
+    console.log(result);
+ });

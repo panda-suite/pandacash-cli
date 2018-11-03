@@ -5,6 +5,7 @@ const path     = require('path');
 const yargs    = require('yargs');
 const initArgs = require("./args")
 const pkg      = require('../package.json');
+const blockchain = require('./rpc');
 
 var detailedVersion = `Pandacash CLI v${pkg.version}`;
 
@@ -51,36 +52,22 @@ async function startNode() {
    * a) in the regtest mode
    * b) will save the data in the repository
    */
-  _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`)
+  _exec(`./node_modules/bcash/bin/bcash --network=regtest --prefix=${__dirname}/../.bcash`);
+  
+  /**
   .stdout.on('data', function(data) {
     console.log(data.toString());
   });
- 
+  */
+
   await nodeAvailable();
 
   console.log('Bitcoin Cash blockchain restarted and listens at port 18332');
 }
 
-async function startDocker() {
-  // delete the pandacash
-  console.log('Restarting Bitcoin Cash Client');
-
-  try {
-    await exec(`docker rm ${CONTAINER_NAME} -f`);
-  } catch (e) {
-    // ignored
-  }
-
-  exec(`docker run --name ${CONTAINER_NAME} -p 18332:18332 -p 3002:3002 -p 3001:3001 ${IMAGE_NAME} &`);
-
-  await nodeAvailable();
-
-  console.log('Bitcoin Cash Client restarted and listens at port 18332');
-}
-
 async function nodeAvailable() {
   try {
-    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} getblockchaininfo`);
+    await blockchain.getblockchaininfo();
   } catch (e) {
     await sleep(500);
     await nodeAvailable();
@@ -97,15 +84,18 @@ async function seedAccounts() {
   console.log('Seeding accounts');
   keyPairs.forEach(async (keyPair) => {
     try {
-    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} importaddress ${keyPair.address}`)
-    await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} generatetoaddress 10 ${keyPair.address}`);
 
+    await blockchain.importaddress([ keyPair.address ]);
+    await blockchain.generatetoaddress([ 10, keyPair.address ]);
+  
     } catch (e) {
       console.log(e);
     }
   });
+
   console.log('Advancing blockchain to enable spending');
-  await exec(`docker exec ${CONTAINER_NAME} ${BITCOIN_CLI} generate 500`);
+
+  await blockchain.generate([ 500, keyPairs[0].address  ])
 }
 
 function enableLogging() {
@@ -160,5 +150,6 @@ function printPandaMessage() {
 }
 
 module.exports = {
-    startNode
+    startNode,
+    seedAccounts
 }
