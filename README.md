@@ -127,7 +127,7 @@ beforeAll(done => {
 });
 ```
 
-The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:48332` and through a REST API on `http://localhost:3000/`. Most importantly, it can be used inside BITBOX applications, by defining a new `local` bitbox environment:
+The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:48332`.
 
 ## Under the hood
 PandaCash consists of the following components:
