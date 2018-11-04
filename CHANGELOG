@@ -1,4 +1,9 @@
 # pandacash-cli Release Notes & Changelog
 
+## v0.4.0
+* Pandacash can be imported in another nodejs application as a node module.
+
+* Removal of rest.bitcoin.com removal (it can be run as an additional service)
+
 ## v0.3.0
 Major change include a full intergration with a  bitcoin cash blockchain nodejs implementation - bcash.
