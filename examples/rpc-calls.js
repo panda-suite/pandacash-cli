@@ -12,5 +12,5 @@ server.listen(8081, (err, pandaCashCore) => {
 
     pandaCashCore.blockchain.getinfo().then(result => {
         console.log(result);
-     });
+    });
 });

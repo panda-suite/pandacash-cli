@@ -28,7 +28,7 @@ class PandaCashCore {
     return BITBOX.Mnemonic.toKeypairs(mnemonic, totalAccounts, true);
   }
 
-  static  generateSeedMnemonic() {
+  static generateSeedMnemonic() {
     return BITBOX.Mnemonic.generate(128);
   }
   /**

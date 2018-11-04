@@ -11,7 +11,7 @@ const _listen = (opts, cb) => {
   const pandaCashCore = new PandaCashCore(opts);
 
   pandaCashCore.startNode()
-  .then((node) => {
+  .then(() => {
     if (pandaCashCore.opts.seedAccounts) {
       pandaCashCore.seedAccounts();
     }
