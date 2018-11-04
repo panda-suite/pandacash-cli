@@ -1,7 +1,7 @@
 {
   "name": "pandacash-cli",
   "version": "0.4.0",
-  "description": "pandacash-cli is a one-click blockchain solution for easier Bitcoin Cash development.",
+  "description": "Fast Bitcoin Cash RPC client for testing and development (inspired by ganache-cli)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
