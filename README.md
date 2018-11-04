@@ -109,7 +109,7 @@ Starting BITBOX API at port 3000
 ```
 
 **In Jasmine/Mocha tests**
-```bash
+```js
 const panda = require("pandacash-cli")
 
 beforeAll(done => {
