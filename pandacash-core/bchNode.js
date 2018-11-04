@@ -13,6 +13,10 @@ const startNode = (opts) => new Promise((resolve, reject) => {
         file: true,
         argv: true,
         env: true,
+
+        // port for the RPC server
+        "http-port": opts.port,
+
         logFile: true,
         logConsole: opts.debug,
         logLevel: 'debug',

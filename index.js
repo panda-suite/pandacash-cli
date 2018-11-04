@@ -2,34 +2,68 @@
 const chalk    = require('chalk');
 const clear    = require('clear');
 const figlet   = require('figlet');
-const pandacashCore = require('./pandacash-core');
+const PandaCashCore = require('./pandacash-core');
+const pkg      = require('./package.json');
 
-const bootstrap = (cb) => {
-  pandacashCore.startNode()
+const detailedVersion = `Pandacash CLI v${pkg.version}`;
+
+const _listen = (opts, cb) => {
+  const pandaCashCore = new PandaCashCore(opts);
+
+  pandaCashCore.startNode()
   .then((node) => {
-    pandacashCore.seedAccounts();
+    if (pandaCashCore.opts.seedAccounts) {
+      pandaCashCore.seedAccounts();
+    }
 
-    // pandacashCore.startApi();
-    pandacashCore.printPandaMessage();
+    if (pandaCashCore.opts.enableLogs) {
+      pandaCashCore.printPandaMessage(detailedVersion);
+    }
 
-    cb && cb(undefined, node);
+    cb && cb(undefined, pandaCashCore);
   })
 };
 
+/**
+ * Interface inspired by ganache-cli
+ */
 module.exports = {
-  bootstrap
+  server: (opts) => {
+    return {
+      listen: (port, cb) => {
+        opts.port = port;
+
+        _listen(opts, cb);
+      }
+    }
+  }
 };
 
+/**
+ * If started from command-line tool:
+ */
 if (!module.parent) {
+  const yargs    = require('yargs');
+  const initArgs = require("./args")
+
   clear();
 
   console.log(
     chalk.yellow(
-      figlet.textSync('PandaCash', { horizontalLayout: 'full' })
+      figlet.textSync('pandacash-cli', { horizontalLayout: 'full' })
     )
   );
 
-  bootstrap();
+  const argv = initArgs(yargs, detailedVersion).argv;
+
+  _listen({
+    mnemonic: argv.m,
+    totalAccounts: argv.a,
+    debug: argv.debug,
+    seedAccounts: true,
+    enableLogs: true,
+    port: argv.port || 48332
+  });
 
   process.stdin.resume();
 }
