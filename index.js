@@ -2,7 +2,7 @@
 const chalk    = require('chalk');
 const clear    = require('clear');
 const figlet   = require('figlet');
-const PandaCashCore = require('./pandacash-core');
+const PandaCashCore = require('./lib/pandacash-core');
 const pkg      = require('./package.json');
 
 const detailedVersion = `Pandacash CLI v${pkg.version}`;

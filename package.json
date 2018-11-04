@@ -20,7 +20,18 @@
   "bugs": {
     "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
-  "keywords": [ "bitcoin", "bitcoincash", "btc", "bch", "ganache-cli", "devtools", "blockchain", "pandacash", "bitcoin-com", "bitbox" ],
+  "keywords": [
+    "bitcoin",
+    "bitcoincash",
+    "btc",
+    "bch",
+    "ganache-cli",
+    "devtools",
+    "blockchain",
+    "pandacash",
+    "bitcoin-com",
+    "bitbox"
+  ],
   "contributors": [
     {
       "name": "Adrian Barwicki",
@@ -29,7 +40,7 @@
     },
     {
       "name": "Rosco Kalis",
-      "email": "rosco.kalis@gmail.com",
+      "email": "roscokalis@gmail.com",
       "url": "https://kalis.me"
     },
     {
@@ -39,6 +50,7 @@
   "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
   "dependencies": {
     "bcash": "^1.0.2",
+    "bchjs": "git+https://github.com/panda-suite/bchjs.git",
     "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",
     "clear": "^0.1.0",
