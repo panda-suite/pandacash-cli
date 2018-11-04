@@ -135,8 +135,6 @@ PandaCash consists of the following components:
   * Doesn't sync with other Bitcoin nodes, and immediately creates new blocks on every transaction.
 * Prefunded addresses
   * 10 addresses with 62.5 spendable BCH each, generated from a random mnemonic.
-* rest.bitcoin.com REST API
-  * A local version of the rest.bitcoin.com code that connects to the `pandacash-cli` blockchain.
 
 # Licence
 Copyright 2018 Panda Suite
