@@ -25,6 +25,16 @@ After installing `pandacash-cli`, it can be used as a command-line tool to quick
 $ pandacash-cli <options>
 ```
 
+**As a general HTTP server**
+```js
+  const panda = require("pandacash-cli");
+  const server = panda.server();
+
+  server.listen(port, (err, blockchain) => {
+
+  });
+```
+
 Options:
 * `-a` or `--accounts`: Specify the number of accounts to generate at startup.
 * `-m` or `--mnemonic`: bip39 mnemonic phrase for generating a PRNG seed, which is in turn used for hierarchical deterministic (HD) account generation.
@@ -83,22 +93,6 @@ Starting BITBOX API at port 3000
 
 The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:48332` and through a REST API on `http://localhost:3000/`. Most importantly, it can be used inside BITBOX applications, by defining a new `local` bitbox environment:
 
-**bitbox.js**
-```javascript
-exports.config = {
-  networks: {
-    development: {
-      restURL: "https://trest.bitcoin.com/v1/"
-    },
-    production: {
-      restURL: "https://rest.bitcoin.com/v1/"
-    },
-    local: {
-      restURL: "http://localhost:3000/v1/"
-    }
-  }
-};
-```
 ## Under the hood
 PandaCash consists of the following components:
 * bcash implementation of bitcoin cash node in regtest mode

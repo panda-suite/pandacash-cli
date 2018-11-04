@@ -4,13 +4,15 @@ const clear    = require('clear');
 const figlet   = require('figlet');
 const pandacashCore = require('./pandacash-core');
 
-const bootstrap = () => {
+const bootstrap = (cb) => {
   pandacashCore.startNode()
-  .then(() => {
+  .then((node) => {
     pandacashCore.seedAccounts();
 
-    pandacashCore.startApi();
+    // pandacashCore.startApi();
     pandacashCore.printPandaMessage();
+
+    cb && cb(undefined, node);
   })
 };
 

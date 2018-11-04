@@ -31,7 +31,7 @@ console.log(options);
 const BITBOXSDK = require('bitbox-sdk/lib/bitbox-sdk');
 const BITBOX = new BITBOXSDK.default();
 
-const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/dist/app.js';
+// const REST_APP = path.dirname(require.resolve('rest.bitcoin.com/package.json')) + '/dist/app.js';
 
 const mnemonic = options.mnemonic || generateSeedMnemonic();
 const keyPairs = generateSeedKeyPairs(mnemonic, options.totalAccounts);
@@ -43,8 +43,6 @@ function generateSeedMnemonic() {
 function generateSeedKeyPairs(mnemonic, totalAccounts) {
   return BITBOX.Mnemonic.toKeypairs(mnemonic, totalAccounts, true);
 }
-
-let blockchainStdout;
 
 /**
  * We use the bcash implementation
@@ -104,7 +102,6 @@ async function seedAccounts() {
 /**
  * Starts the wrapper around the RPC commands
  * We currently use the Bitbox implementation.
- */
 async function startApi() {
   console.log('Starting BITBOX API at port 3000');
 
@@ -121,6 +118,7 @@ async function startApi() {
 
   await exec(commands.join(" "));
 }
+*/
 
 function printPandaMessage() {
   process.stdout.write(`
@@ -152,14 +150,16 @@ function printPandaMessage() {
     Base HD Path:  m/44'/145'/0'/0/{account_index}
  
     Bitcoin Cash Listening on http://localhost:${NODE_PORT}
-    BITBOX API running at http://localhost:3000/v1/
-    BITBOX API Docs running at http://localhost:3000/
   `);
+  /**
+   * BITBOX API running at http://localhost:3000/v1/
+   * BITBOX API Docs running at http://localhost:3000/
+   */
 }
 
 module.exports = {
     startNode,
     seedAccounts,
-    startApi,
+    // startApi,
     printPandaMessage
 }
