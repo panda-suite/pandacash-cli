@@ -2,7 +2,8 @@ const panda = require("../index");
 
 const server = panda.server({
     seedAccounts: false,
-    enableLogs: false
+    enableLogs: false,
+    debug: false
 });
 
 server.listen({
@@ -14,12 +15,12 @@ server.listen({
     }
 
     pandaCashCore
-        .nodeRPC
-        .getinfo()
-        .then(result => {
-            console.log(result);
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    .walletNodeRPC
+    .listunspent(0, 20, pandaCashCore.accounts[0].address)
+    .then(result => {
+        console.log(result);
+    })
+    .catch(err => {
+        console.log(err);
+    })
 });

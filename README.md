@@ -37,7 +37,10 @@ const server = panda.server({
     debug: false
 });
 
-server.listen(48322, (err, pandaCashCore) => {
+server.listen({
+  port: 48332
+  walletPort: 48334
+}, (err, pandaCashCore) => {
     if (err) {
         return console.error(err);
     }

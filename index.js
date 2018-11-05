@@ -30,8 +30,13 @@ const _listen = (opts, cb) => {
 module.exports = {
   server: (opts) => {
     return {
-      listen: (port, cb) => {
-        opts.port = port;
+      listen: (portOpts, cb) => {
+        if (typeof portOpts === "number") {
+          opts.port = portOpts;
+        } else {
+          opts.port = portOpts.port;
+          opts.walletPort = portOpts.walletPort;
+        }
 
         _listen(opts, cb);
       }
@@ -62,6 +67,7 @@ if (!module.parent) {
     debug: argv.debug,
     seedAccounts: true,
     enableLogs: true,
+    walletPort: argv.walletPort || 48333,
     port: argv.port || 48332
   });
 

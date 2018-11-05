@@ -1,5 +1,5 @@
 const bchNode = require('./bchNode');
-const PandaCashRPC = require('./rpc');
+const { PandaCashNodeRPC, PandaCashWalletNodeRPC } = require('./rpc');
 
 const sleep = (ms) => {
   return new Promise(resolve => {
@@ -14,12 +14,23 @@ class PandaCashCore {
     this.opts = {
       mnemonic: opts.mnemonic || PandaCashCore.generateSeedMnemonic(),
       totalAccounts: opts.totalAccounts || 10,
-      port: opts.port || 48322,
+      port: opts.port || 48332,
+      walletPort: opts.walletPort || 48333,
       enableLogs: opts.enableLogs || false,
       debug: opts.debug || false
     };
 
-    this.blockchain = new PandaCashRPC("127.0.0.1", this.opts.port, "regtest");
+    this.nodeRPC = new PandaCashNodeRPC(
+      "127.0.0.1",
+      this.opts.port,
+      "regtest"
+    );
+
+    this.walletNodeRPC = new PandaCashWalletNodeRPC(
+      "127.0.0.1",
+      this.opts.walletPort,
+      "regtest"
+    );
 
     this.accounts = PandaCashCore.generateSeedKeyPairs(this.opts.mnemonic, this.opts.totalAccounts);
   }
@@ -46,10 +57,14 @@ class PandaCashCore {
        * a) in the regtest mode
        * b) --prefix=${__dirname}/../.bcash
        */
-      this.bchNode = bchNode.startNode({
+      
+      const nodes = bchNode.startNode({
         debug: this.opts.debug,
         port: this.opts.port,
+        walletPort: this.opts.walletPort
       });
+
+      this.bchNode = nodes.node;
 
       await this.nodeAvailable();
 
@@ -62,7 +77,7 @@ class PandaCashCore {
 
   async nodeAvailable() {
     try {
-      await this.blockchain.getblockchaininfo();
+      await this.nodeRPC.getblockchaininfo();
     } catch (e) {
       await sleep(500);
       await this.nodeAvailable();
@@ -74,8 +89,8 @@ class PandaCashCore {
 
     this.accounts.forEach(async (keyPair) => {
       try {
-        await this.blockchain.importaddress([ keyPair.address ]);
-        await this.blockchain.generatetoaddress([ 10, keyPair.address ]);
+        await this.nodeRPC.importaddress([ keyPair.address ]);
+        await this.nodeRPC.generatetoaddress([ 10, keyPair.address ]);
       } catch (e) {
         console.log(e);
       }
@@ -83,7 +98,7 @@ class PandaCashCore {
 
     console.log('Advancing blockchain to enable spending');
 
-    await this.blockchain.generate([
+    await this.nodeRPC.generate([
       500,
       keyPairs[0].address
     ])

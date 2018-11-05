@@ -7,12 +7,6 @@ class PandaCashRPC {
             port: port || 18332,
             network: network || "regtest"
         };
-
-        this.getinfo = this.methodFactory("getinfo");
-        this.importaddress = this.methodFactory("importaddress");
-        this.generatetoaddress = this.methodFactory("generatetoaddress");
-        this.getblockchaininfo = this.methodFactory("getblockchaininfo");
-        this.generate = this.methodFactory("generate");
     }
 
     runMethod(methodName, params) {
@@ -27,7 +21,13 @@ class PandaCashRPC {
                 body: JSON.stringify(body)
             })
             .then(res => res.json())
-            .then(json => resolve(json.result))
+            .then(json => {
+                if (json.error) {
+                    return reject(json.error);
+                }
+
+                return resolve(json.result);
+            })
             .catch(err => reject(err));
         });
     } 
@@ -37,4 +37,28 @@ class PandaCashRPC {
     }
 }
 
-module.exports = PandaCashRPC;
+class PandaCashNodeRPC extends PandaCashRPC {
+    constructor(host, port, network) {
+        super(host, port, network);
+       
+        this.getinfo = this.methodFactory("getinfo");
+        this.importaddress = this.methodFactory("importaddress");
+        this.generatetoaddress = this.methodFactory("generatetoaddress");
+        this.getblockchaininfo = this.methodFactory("getblockchaininfo");
+        this.generate = this.methodFactory("generate");
+
+        this.listunspent = this.methodFactory("listunspent");
+    }
+}
+class PandaCashWalletNodeRPC extends PandaCashRPC {
+    constructor(host, port, network) {
+        super(host, port, network);
+
+        this.listunspent = this.methodFactory("listunspent");
+    }
+}
+
+module.exports = {
+    PandaCashWalletNodeRPC,
+    PandaCashNodeRPC
+};
