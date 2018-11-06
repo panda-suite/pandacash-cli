@@ -29,8 +29,6 @@ const server = panda.server({
     mnemonic: "cigar magnet ocean purchase travel damp snack alone theme budget wagon wrong",
     // default: 10
     totalAccounts: 10,
-    // will seed generated accounts with premined coins, default: false
-    seedAccounts: true,
     // will log in the console
     enableLogs: true,
     // will show logs from the bch node
@@ -104,11 +102,12 @@ Starting BITBOX API at port 3000
     (9) cUHqwE6oXE5dDQrn8bXwkYmm71vViwzjGseGeSPCyUjThEXZHpXG
 
     HD Wallet
-    ==================
-    Mnemonic:      candy maple cake sugar pudding cream honey rich smooth crumble sweet treat
-    Base HD Path:  m/44'/145'/0'/0/{account_index}
+      ==================
+      Mnemonic:      evil sudden oven discover exist approve can catalog farm ivory mom rug
+      Base HD Path:  m/44'/1/0/0/{account_index}
 
-    Bitcoin Cash Listening on http://localhost:48332
+      Bitcoin Cash Node Listening on http://localhost:48332
+      Bitcoin Cash Wallet Listening on http://localhost:48333
 ```
 
 **In Jasmine/Mocha tests**
@@ -117,7 +116,6 @@ const panda = require("pandacash-cli")
 
 beforeAll(done => {
   const server = panda.server({
-    seedAccounts: false,
     enableLogs: false,
     debug: false
   })
