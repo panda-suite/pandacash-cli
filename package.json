@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:debug": "node index.js --debug",
-    "docker:build": "docker build -t pandacash ."
+    "start:debug": "node index.js --debug"
   },
   "bin": {
     "pandacash-cli": "index.js"
@@ -20,7 +19,18 @@
   "bugs": {
     "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
-  "keywords": [ "bitcoin", "bitcoincash", "btc", "bch", "ganache-cli", "devtools", "blockchain", "pandacash", "bitcoin-com", "bitbox" ],
+  "keywords": [
+    "bitcoin",
+    "bitcoincash",
+    "btc",
+    "bch",
+    "ganache-cli",
+    "devtools",
+    "blockchain",
+    "pandacash",
+    "bitcoin-com",
+    "bitbox"
+  ],
   "contributors": [
     {
       "name": "Adrian Barwicki",
@@ -39,6 +49,7 @@
   "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
   "dependencies": {
     "bcash": "^1.0.2",
+    "bchjs": "0.1.0-alpha.2",
     "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",
     "clear": "^0.1.0",
@@ -46,5 +57,6 @@
     "figlet": "^1.2.1",
     "node-fetch": "^2.2.0",
     "yargs": "^12.0.2"
-  }
+  },
+  "devDependencies": {}
 }
