@@ -35,26 +35,37 @@ class PandaCashRPC {
     methodFactory(methodName) {
         return (params) => this.runMethod(methodName, params);
     }
+
+    initMethods(methods) {
+        methods.forEach(method => {
+            this[method] = this.methodFactory(method);
+        });
+    }
 }
 
 class PandaCashNodeRPC extends PandaCashRPC {
     constructor(host, port, network) {
         super(host, port, network);
-       
-        this.getinfo = this.methodFactory("getinfo");
-        this.importaddress = this.methodFactory("importaddress");
-        this.generatetoaddress = this.methodFactory("generatetoaddress");
-        this.getblockchaininfo = this.methodFactory("getblockchaininfo");
-        this.generate = this.methodFactory("generate");
 
-        this.listunspent = this.methodFactory("listunspent");
+        this.initMethods([
+            "getinfo",
+            "importaddress",
+            "generatetoaddress",
+            "getblockchaininfo",
+            "generate"
+        ]);
     }
 }
 class PandaCashWalletNodeRPC extends PandaCashRPC {
     constructor(host, port, network) {
         super(host, port, network);
 
-        this.listunspent = this.methodFactory("listunspent");
+        this.initMethods([
+            "listunspent",
+            "getwalletinfo",
+            "getbalance",
+            "sendtoaddress"
+        ]);
     }
 }
 
