@@ -128,7 +128,22 @@ beforeAll(done => {
 });
 ```
 
-The `pandacash-cli` blockchain can be reached through JSON-RPC on `http://localhost:48332`.
+## Pandacash and bch.js
+[`bch.js`](https://github.com/panda-suite/bchjs) can be added to your application or tests, and be used accordingly. It can be configured to connect to any node such as the pandacash local blockchain.
+
+```javascript
+const panda = require("pandacash-cli");
+const { Web3BCH, HttpProvider } = require('bchjs');
+
+const server = panda.server();
+
+server.listen({ port: 48334, walletPort: 48335 }, (err) => {
+    const web3bchNode = new Web3BCH(new HttpProvider('http://localhost:48334'));
+    const web3bchWallet = new Web3BCH(new HttpProvider('http://localhost:48335'));
+
+    await web3bchNode.rpc.getblockchaininfo();
+});
+```
 
 ## Under the hood
 PandaCash consists of the following components:

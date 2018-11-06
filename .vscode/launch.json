@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "wallet-get-addresses",
-            "program": "${workspaceFolder}/examples/wallet-get-addresses.js",
+            "name": "wallet-get-balance",
+            "program": "${workspaceFolder}/examples/wallet-get-balance.js",
             "env": { }
         }
     ]

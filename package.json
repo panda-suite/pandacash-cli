@@ -51,6 +51,7 @@
   "dependencies": {
     "async": "^2.6.1",
     "bcash": "^1.0.2",
+    "bchjs": "0.1.0-alpha.2",
     "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",
     "clear": "^0.1.0",

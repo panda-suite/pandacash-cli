@@ -16,7 +16,7 @@ server.listen({
 
     pandaCashCore
     .walletNodeRPC
-    .listunspent([ 0, 20, [ pandaCashCore.accounts[0].address ] ])
+    .listunspent(0, 20, [ pandaCashCore.accounts[0].address ])
     .then(result => {
         console.log(result);
 
