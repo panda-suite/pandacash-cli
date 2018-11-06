@@ -64,7 +64,8 @@ class PandaCashWalletNodeRPC extends PandaCashRPC {
             "listunspent",
             "getwalletinfo",
             "getbalance",
-            "sendtoaddress"
+            "sendtoaddress",
+            "importprivkey"
         ]);
     }
 }

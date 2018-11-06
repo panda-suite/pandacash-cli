@@ -20,7 +20,18 @@
   "bugs": {
     "url": "https://github.com/panda-suite/pandacash-cli/issues"
   },
-  "keywords": [ "bitcoin", "bitcoincash", "btc", "bch", "ganache-cli", "devtools", "blockchain", "pandacash", "bitcoin-com", "bitbox" ],
+  "keywords": [
+    "bitcoin",
+    "bitcoincash",
+    "btc",
+    "bch",
+    "ganache-cli",
+    "devtools",
+    "blockchain",
+    "pandacash",
+    "bitcoin-com",
+    "bitbox"
+  ],
   "contributors": [
     {
       "name": "Adrian Barwicki",
@@ -46,5 +57,7 @@
     "figlet": "^1.2.1",
     "node-fetch": "^2.2.0",
     "yargs": "^12.0.2"
+  },
+  "devDependencies": {
   }
 }

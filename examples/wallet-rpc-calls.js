@@ -26,9 +26,19 @@ server.listen({
 
     pandaCashCore
     .walletNodeRPC
-    .getwalletinfo()
+    .importprivkey(`'${pandaCashCore.accounts[0].privateKeyWIF}'`, "'Account 0'", true)
     .then(result => {
         console.log(result);
+
+        pandaCashCore
+        .walletNodeRPC
+        .getwalletinfo()
+        .then(result => {
+            console.log(result);
+        })
+        .catch(err => {
+            console.log(err);
+        });
     })
     .catch(err => {
         console.log(err);
