@@ -13,12 +13,16 @@ class PandaCashRPC {
         return new Promise((resolve, reject) => {
             const body = {
                 method: methodName,
-                params
+                params: params
             };
-    
+            
+            const stringifedBody = JSON.stringify(body);
+
+            // console.log(stringifedBody);
+        
             fetch(`http://${this.connectionData.host}:${this.connectionData.port}`, {
-                method: 'POST',
-                body: JSON.stringify(body)
+                method: "POST",
+                body: stringifedBody
             })
             .then(res => res.json())
             .then(json => {
@@ -49,7 +53,6 @@ class PandaCashNodeRPC extends PandaCashRPC {
 
         this.initMethods([
             "getinfo",
-            "importaddress",
             "generatetoaddress",
             "getblockchaininfo",
             "generate"
@@ -61,11 +64,14 @@ class PandaCashWalletNodeRPC extends PandaCashRPC {
         super(host, port, network);
 
         this.initMethods([
+            "importaddress",
             "listunspent",
             "getwalletinfo",
             "getbalance",
             "sendtoaddress",
-            "importprivkey"
+            "importprivkey",
+            "getaddressesbyaccount",
+            "dumpprivkey"
         ]);
     }
 }

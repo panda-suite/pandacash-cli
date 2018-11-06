@@ -11,11 +11,8 @@ const _listen = (opts, cb) => {
   const pandaCashCore = new PandaCashCore(opts);
 
   pandaCashCore.startNode()
+  .then(() => pandaCashCore.seedAccounts())
   .then(() => {
-    if (pandaCashCore.opts.seedAccounts) {
-      pandaCashCore.seedAccounts();
-    }
-
     if (pandaCashCore.opts.enableLogs) {
       pandaCashCore.printPandaMessage(detailedVersion);
     }
@@ -65,7 +62,6 @@ if (!module.parent) {
     mnemonic: argv.m,
     totalAccounts: argv.a,
     debug: argv.debug,
-    seedAccounts: true,
     enableLogs: true,
     walletPort: argv.walletPort || 48333,
     port: argv.port || 48332

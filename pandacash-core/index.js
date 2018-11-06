@@ -1,4 +1,6 @@
+const { hd, KeyRing } = require('bcash');
 const bchNode = require('./bchNode');
+const async = require('async');
 const { PandaCashNodeRPC, PandaCashWalletNodeRPC } = require('./rpc');
 
 const sleep = (ms) => {
@@ -17,7 +19,7 @@ class PandaCashCore {
       port: opts.port || 48332,
       walletPort: opts.walletPort || 48333,
       enableLogs: opts.enableLogs || false,
-      debug: opts.debug || false
+      debug: opts.debug || false,
     };
 
     this.nodeRPC = new PandaCashNodeRPC(
@@ -35,22 +37,39 @@ class PandaCashCore {
     this.accounts = PandaCashCore.generateSeedKeyPairs(this.opts.mnemonic, this.opts.totalAccounts);
   }
 
+  static get HDPath() {
+    return "m/44'/1/0/0/"
+  }
+
   static generateSeedKeyPairs(mnemonic, totalAccounts) {
-    return BITBOX.Mnemonic.toKeypairs(mnemonic, totalAccounts, true);
+    const accounts = [];
+    const { HDPrivateKey } = hd;
+    const privateKey = HDPrivateKey.fromPhrase(mnemonic);
+
+    for (var index = 0; index < totalAccounts; index++) {
+      const deriveSomething = privateKey.derivePath(PandaCashCore.HDPath + index);
+      const ring = KeyRing.fromPrivate(deriveSomething.privateKey);
+      const account = {};
+
+      account.privateKeyWIF = ring.toSecret('regtest');
+
+      accounts.push(account);
+    }
+
+    return accounts;
   }
 
   static generateSeedMnemonic() {
     return BITBOX.Mnemonic.generate(128);
   }
-  /**
+
+ /**
  * We use the bcash implementation
  * http://bcoin.io/api-docs
  */
  async startNode() {
       // delete the pandacash
-      if (this.opts.enableLogs) {
-        console.log('Starting Bitcoin Cash blockchain');
-      }
+      this.opts.enableLogs && console.log('Starting Bitcoin Cash blockchain');
 
       /**
        * Will start the bcash node
@@ -68,9 +87,7 @@ class PandaCashCore {
 
       await this.nodeAvailable();
 
-      if (this.opts.enableLogs) {
-        console.log(`Bitcoin Cash blockchain started and listens at port ${this.opts.port}`);
-      }
+      this.opts.enableLogs &&  console.log(`Bitcoin Cash blockchain started and listens at port ${this.opts.port}`);
 
       return this.bchNode;
   }
@@ -85,23 +102,48 @@ class PandaCashCore {
   }
 
   async seedAccounts() {
-    console.log('Seeding accounts');
+    this.opts.enableLogs && console.log('Seeding accounts');
+    let oldAddresses = [];
 
-    this.accounts.forEach(async (keyPair) => {
-      try {
-        await this.nodeRPC.importaddress([ keyPair.address ]);
-        await this.nodeRPC.generatetoaddress([ 10, keyPair.address ]);
-      } catch (e) {
-        console.log(e);
-      }
-    });
+    return new Promise((resolve, reject) => {
+      async.eachSeries(this.accounts, (account, cb) => {
+        async.waterfall([
+          (cb) => {
+            this.walletNodeRPC.importprivkey([
+              account.privateKeyWIF
+            ]).then(() => cb(), cb);
+          },
+          (cb) => {
+            this.walletNodeRPC.getaddressesbyaccount([
+              "default"
+            ]).then(addresses => {
+              // no better way to get the new address?
+              account.address = addresses.find(_ => oldAddresses.indexOf(_) === -1);
 
-    console.log('Advancing blockchain to enable spending');
+              oldAddresses = addresses;
 
-    await this.nodeRPC.generate([
-      500,
-      keyPairs[0].address
-    ])
+              cb();
+            }, cb)
+          }, (cb) => {
+            this.nodeRPC.generatetoaddress([ 10, account.address ])
+            .then (() => cb(), cb);
+          }
+        ], cb)
+      }, async err => {
+        this.opts.enableLogs && console.log('Advancing blockchain to enable spending');
+
+        try {
+          await this.nodeRPC.generatetoaddress([
+            500,
+            this.accounts[0].address
+          ]);
+        } catch (err) {
+          console.error(err);
+        }
+
+        return resolve();
+      });
+    })
   }
 
   /**
@@ -126,24 +168,25 @@ class PandaCashCore {
   */
 
  printPandaMessage(detailedVersion) {
-    process.stdout.write(`
+    console.log(`
       ${detailedVersion}
 
       Available Accounts
       ==================`);
+    
 
     this.accounts.forEach((keyPair, i) => {
-      process.stdout.write(`
+      console.log(`
       (${i}) ${keyPair.address}`);
     });
 
-    process.stdout.write(`
+    console.log(`
 
       Private Keys
       ==================`);
 
       this.accounts.forEach((keyPair, i) => {
-      process.stdout.write(`
+        console.log(`
       (${i}) ${keyPair.privateKeyWIF}`);
     });
 
@@ -152,9 +195,10 @@ class PandaCashCore {
       HD Wallet
       ==================
       Mnemonic:      ${this.opts.mnemonic}
-      Base HD Path:  m/44'/145'/0'/0/{account_index}
+      Base HD Path:  ${PandaCashCore.HDPath}{account_index}
   
-      Bitcoin Cash Listening on http://localhost:${this.opts.port}
+      Bitcoin Cash Node Listening on http://localhost:${this.opts.port}
+      Bitcoin Cash Wallet Listening on http://localhost:${this.opts.walletPort}
     `);
     /**
      * BITBOX API running at http://localhost:3000/v1/

@@ -4,22 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
             "type": "node",
             "request": "launch",
-            "name": "Programm starten",
-            "program": "${workspaceFolder}/node_modules/rest.bitcoin.com/app.js",
-            "env": {
-                "PORT": "3001",
-                "BITCOINCOM_BASEURL":"http://localhost:3001/v1/api/",
-                "RPC_BASEURL":"http://localhost:18332/",
-                "RPC_PASSWORD": "regtest",
-                "RPC_USERNAME": "regtest",
-                "NETWORK": "local",
-                "ZEROMQ_PORT": "0",
-                "ZEROMQ_URL": "0"
-            }
+            "name": "wallet-get-addresses",
+            "program": "${workspaceFolder}/examples/wallet-get-addresses.js",
+            "env": { }
         }
     ]
 }

@@ -18,8 +18,12 @@ server.listen({
         .getinfo()
         .then(result => {
             console.log(result);
+
+            process.exit();
         })
         .catch(err => {
             console.log(err);
+
+            process.exit();
         });
 });
