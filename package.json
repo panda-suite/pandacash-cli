@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:debug": "node index.js --debug",
-    "docker:build": "docker build -t pandacash ."
+    "start:debug": "node index.js --debug"
   },
   "bin": {
     "pandacash-cli": "index.js"
@@ -49,7 +48,6 @@
   ],
   "homepage": "https://github.com/panda-suite/pandacash-cli#readme",
   "dependencies": {
-    "async": "^2.6.1",
     "bcash": "^1.0.2",
     "bitbox-sdk": "^2.1.1",
     "chalk": "^2.4.1",
