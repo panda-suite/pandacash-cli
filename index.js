@@ -2,43 +2,16 @@
 const chalk    = require('chalk');
 const clear    = require('clear');
 const figlet   = require('figlet');
-const PandaCashCore = require('./lib/pandacash-core');
+const panda = require('pandacash-core');
 const pkg      = require('./package.json');
 
 const detailedVersion = `Pandacash CLI v${pkg.version}`;
-
-const _listen = (opts, cb) => {
-  const pandaCashCore = new PandaCashCore(opts);
-
-  pandaCashCore.startNode()
-  .then(() => pandaCashCore.seedAccounts())
-  .then(() => {
-    if (pandaCashCore.opts.enableLogs) {
-      pandaCashCore.printPandaMessage(detailedVersion);
-    }
-
-    cb && cb(undefined, pandaCashCore);
-  })
-};
 
 /**
  * Interface inspired by ganache-cli
  */
 module.exports = {
-  server: (opts) => {
-    return {
-      listen: (portOpts, cb) => {
-        if (typeof portOpts === "number") {
-          opts.port = portOpts;
-        } else {
-          opts.port = portOpts.port;
-          opts.walletPort = portOpts.walletPort;
-        }
-
-        _listen(opts, cb);
-      }
-    }
-  }
+  server: panda.server
 };
 
 /**
@@ -58,7 +31,7 @@ if (!module.parent) {
 
   const argv = initArgs(yargs, detailedVersion).argv;
 
-  _listen({
+  const server = panda.server({
     mnemonic: argv.m,
     totalAccounts: argv.a,
     debug: argv.debug,
@@ -67,5 +40,11 @@ if (!module.parent) {
     port: argv.port || 48332
   });
 
-  process.stdin.resume();
+  server.listen({port: 8081, walletPort: 8082 }, (err) => {
+      if (err) {
+          return console.error(err);
+      }
+
+      process.stdin.resume();
+  });
 }

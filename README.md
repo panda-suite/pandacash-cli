@@ -1,4 +1,4 @@
-# pandacash-cli
+# Pandacash CLI
 Panda Suite is a suite of tools to make BCH development more accessible to every developer.
 
 When developing applications for Bitcoin Cash, it is important that its functionality is well-tested, as the app can potentially be dealing with large amounts of money. For testing purposes, there is a public Bitcoin Cash testnet, but this testnet can not be used without an internet connection, and obtaining larger amounts of BCH can be cumbersome. Finally, in earlier stages of development, many developers would rather not be using a public network already, and would rather develop locally until development has furthered.
@@ -20,40 +20,10 @@ npm install --global pandacash-cli
 ## Usage
 After installing `pandacash-cli`, it can be used as a command-line tool to quickly spin up a local development BCH blockchain with a single command. The local blockchain comes with ten pre-funded BCH addresses, which can be used in the local development process. `pandacash-cli` will also spin up a REST API to interface with the local blockchain that is fully compatible with [BITBOX](https://developer.bitcoin.com/bitbox/).
 
-**As a general HTTP server**
-```js
-const panda = require("pandacash-cli");
-
-const server = panda.server({
-    // optional, will be generated if not provider
-    mnemonic: "cigar magnet ocean purchase travel damp snack alone theme budget wagon wrong",
-    // default: 10
-    totalAccounts: 10,
-    // will log in the console
-    enableLogs: true,
-    // will show logs from the bch node
-    debug: false
-});
-
-server.listen({
-  port: 48332
-  walletPort: 48334
-}, (err, pandaCashCore) => {
-    if (err) {
-        return console.error(err);
-    }
-
-    console.log("Mnemonic: " + pandaCashCore.opts.mnemonic);
-    console.log("Account[0] public key: " + pandaCashCore.accounts[0].address);
-    console.log("Account[0] private key: " + pandaCashCore.accounts[0].privateKeyWIF);
-});
-```
-
 **Command Line**
 ```bash
 $ pandacash-cli <options>
 ```
-
 
 Options:
 * `-a` or `--accounts`: Specify the number of accounts to generate at startup.
@@ -110,23 +80,8 @@ Starting BITBOX API at port 3000
       Bitcoin Cash Wallet Listening on http://localhost:48333
 ```
 
-**In Jasmine/Mocha tests**
-```js
-const panda = require("pandacash-cli")
-
-beforeAll(done => {
-  const server = panda.server({
-    enableLogs: false,
-    debug: false
-  })
-
-  server.listen(48332, (err, pandaCashCore) => {
-    if (err) done(err);
-
-    done()
-  })
-});
-```
+**More usage options**
+In order to use pandacash in your tests or as a server, use [`pandacash-core`](https://github.com/panda-suite/pandacash-core).
 
 ## Pandacash and bch.js
 [`bch.js`](https://github.com/panda-suite/bchjs) can be added to your application or tests, and be used accordingly. It can be configured to connect to any node such as the pandacash local blockchain.

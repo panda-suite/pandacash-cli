@@ -1,5 +1,11 @@
 # pandacash-cli Release Notes & Changelog
 
+## v0.4.2
+* pandacash-core extract to a separate module
+
+## v0.4.1
+* Fixes of address generation, rpc extracted to a separate module
+
 ## v0.4.0
 * Pandacash can be imported in another nodejs application as a node module.
 
