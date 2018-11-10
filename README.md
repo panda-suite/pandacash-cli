@@ -1,9 +1,7 @@
 # Pandacash CLI
-Panda Suite is a suite of tools to make BCH development more accessible to every developer.
-
 When developing applications for Bitcoin Cash, it is important that its functionality is well-tested, as the app can potentially be dealing with large amounts of money. For testing purposes, there is a public Bitcoin Cash testnet, but this testnet can not be used without an internet connection, and obtaining larger amounts of BCH can be cumbersome. Finally, in earlier stages of development, many developers would rather not be using a public network already, and would rather develop locally until development has furthered.
 
-This is where `pandacash-cli` comes in. `pandacash-cli` is a one-click Bitcoin Cash blockchain with pre-funded BCH addresses, enabling developers to quickly start working with BCH without any hassle. `pandacash-cli` is similar to [`ganache-cli`](https://github.com/trufflesuite/ganache-cli), but for Bitcoin Cash.
+This is where `pandacash-cli` comes in. `pandacash-cli` is a one-click Bitcoin Cash blockchain with pre-funded BCH addresses, enabling developers to quickly start working with BCH without any hassle. `pandacash-cli` is similar to [`ganache-cli`](https://github.com/trufflesuite/ganache-cli), but for Bitcoin Cash. `pandacash-cli` is a wrapper around [pandacash-core](https://www.npmjs.com/package/pandacash-core).
 
 ## Prerequisites
 To run `pandacash-cli`, make sure that [Node.js](https://nodejs.org/) is installed.
@@ -43,7 +41,7 @@ Seeding accounts
 Advancing blockchain to enable spending
 Starting BITBOX API at port 3000
 
-    PandaCash CLI v0.2.0
+    PandaCash CLI v0.4.2
 
     Available Accounts
     ==================
@@ -80,32 +78,20 @@ Starting BITBOX API at port 3000
       Bitcoin Cash Wallet Listening on http://localhost:48333
 ```
 
-**More usage options**
-In order to use pandacash in your tests or as a server, use [`pandacash-core`](https://github.com/panda-suite/pandacash-core).
+## More usage options - pandacash-core
+In order to use pandacash in your tests or as a server, use [`pandacash-core`](https://www.npmjs.com/package/pandacash-core).
 
-## Pandacash and bch.js
-[`bch.js`](https://github.com/panda-suite/bchjs) can be added to your application or tests, and be used accordingly. It can be configured to connect to any node such as the pandacash local blockchain.
-
-```javascript
-const panda = require("pandacash-cli");
-const { Web3BCH, HttpProvider } = require('bchjs');
-
-const server = panda.server();
-
-server.listen({ port: 48334, walletPort: 48335 }, (err) => {
-    const web3bchNode = new Web3BCH(new HttpProvider('http://localhost:48334'));
-    const web3bchWallet = new Web3BCH(new HttpProvider('http://localhost:48335'));
-
-    await web3bchNode.rpc.getblockchaininfo();
-});
-```
 
 ## Under the hood
 PandaCash consists of the following components:
 * bcash implementation of bitcoin cash node in regtest mode
   * Doesn't sync with other Bitcoin nodes, and immediately creates new blocks on every transaction.
 * Prefunded addresses
-  * 10 addresses with 62.5 spendable BCH each, generated from a random mnemonic.
+  * 10 addresses with spendable BCH each, generated from a random mnemonic.
+
+## Contributors
+* Adrian Barwicki
+* Rosco Kalis
 
 # Licence
 Copyright 2018 Panda Suite
