@@ -16,7 +16,7 @@ npm install --global pandacash-cli
 ```
 
 ## Usage
-After installing `pandacash-cli`, it can be used as a command-line tool to quickly spin up a local development BCH blockchain with a single command. The local blockchain comes with ten pre-funded BCH addresses, which can be used in the local development process. `pandacash-cli` will also spin up a REST API to interface with the local blockchain that is fully compatible with [BITBOX](https://developer.bitcoin.com/bitbox/).
+After installing `pandacash-cli`, it can be used as a command-line tool to quickly spin up a local development BCH blockchain with a single command. The local blockchain comes with ten pre-funded BCH addresses, which can be used in the local development process.
 
 **Command Line**
 ```bash
