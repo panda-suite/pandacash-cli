@@ -1,5 +1,8 @@
 # pandacash-cli Release Notes & Changelog
 
+## v0.4.4
+* core updated to 0.3.0
+
 ## v0.4.2
 * pandacash-core extract to a separate module
 

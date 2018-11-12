@@ -70,12 +70,14 @@ Starting BITBOX API at port 3000
     (9) cUHqwE6oXE5dDQrn8bXwkYmm71vViwzjGseGeSPCyUjThEXZHpXG
 
     HD Wallet
-      ==================
-      Mnemonic:      evil sudden oven discover exist approve can catalog farm ivory mom rug
-      Base HD Path:  m/44'/1/0/0/{account_index}
+    ==================
+    Mnemonic:      evil sudden oven discover exist approve can catalog farm ivory mom rug
+    Base HD Path:  m/44'/1/0/0/{account_index}
 
-      Bitcoin Cash Node Listening on http://localhost:48332
-      Bitcoin Cash Wallet Listening on http://localhost:48333
+    Network: regtest
+    ==================
+    Bitcoin Cash Node Listening on http://localhost:48332
+    Bitcoin Cash Wallet Listening on http://localhost:48333
 ```
 
 ## More usage options - pandacash-core

@@ -35,12 +35,10 @@ if (!module.parent) {
     mnemonic: argv.m,
     totalAccounts: argv.a,
     debug: argv.debug,
-    enableLogs: true,
-    walletPort: argv.walletPort || 48333,
-    port: argv.port || 48332
+    enableLogs: true
   });
 
-  server.listen({port: 8081, walletPort: 8082 }, (err) => {
+  server.listen({ port: argv.port || 48332, walletPort: argv.walletPort || 48333 }, (err) => {
       if (err) {
           return console.error(err);
       }
