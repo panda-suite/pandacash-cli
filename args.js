@@ -15,6 +15,20 @@ module.exports = exports = function(yargs, version) {
     //   type: 'number',
     //   default: 100.0
     // })
+    .option('p', {
+      group:'Network',
+      alias:'port',
+      type: 'number',
+      describe: 'Specify the port at startup', 
+      default: 48332   
+    })
+    .option('w', {
+      group:'Network',
+      alias:'walletPort',
+      type: 'number',
+      describe: 'Specify the walletPort at startup', 
+      default: 48333   
+    })    
     .option('m', {
       group: 'Chain:',
       alias: 'mnemonic',
@@ -51,6 +65,6 @@ module.exports = exports = function(yargs, version) {
     .showHelpOnFail(false, 'Specify -? or --help for available options')
     .help('help')
     .alias('help', '?')
-    .wrap(Math.min(120, yargs.terminalWidth()))
+    .wrap(Math.min(120, yargs.terminalWidth()))    
     .version(version)
 }

@@ -26,6 +26,8 @@ $ pandacash-cli <options>
 Options:
 * `-a` or `--accounts`: Specify the number of accounts to generate at startup.
 * `-m` or `--mnemonic`: bip39 mnemonic phrase for generating a PRNG seed, which is in turn used for hierarchical deterministic (HD) account generation.
+* `-p` or `--port`: Specify the port at startup
+* `-w` or `--walletPort`: Specify the walletPort at startup
 * `--debug`: Show debug output from the bitcoin node.
 
 ```bash

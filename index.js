@@ -34,6 +34,8 @@ if (!module.parent) {
   const server = panda.server({
     mnemonic: argv.m,
     totalAccounts: argv.a,
+    port: argv.p,
+    walletPort: argv.w,
     debug: argv.debug,
     enableLogs: true
   });
